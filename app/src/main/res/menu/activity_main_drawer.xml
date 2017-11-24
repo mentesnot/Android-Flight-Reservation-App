@@ -22,17 +22,29 @@
             android:title="Tools" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Account">
+
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_account_box_black_24dp"
+                android:title="Profile" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_security"
+                android:icon="@drawable/ic_security_black_24dp"
+                android:title="Security Settings" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="About" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_assignment_return_black_24dp"
+                android:title="Logout" />menu>
+
         </menu>
+
+
     </item>
 
 </menu>
