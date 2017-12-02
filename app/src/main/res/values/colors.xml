@@ -5,8 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackground">#ffffb3</color>
     <color name="backgroundDefault">#FFFFFF</color>
-    <color name="backgroundLightGray">#e6e6e6</color>
+    <color name="backgroundLightGray">#F5F5F5</color>
+    <color name="colorLightGray">#f2f2f2</color>
     <color name="colorGray">#999999</color>
+    <color name="colorMediumGray">#777777</color>
     <color name="colorText">#00b300</color>
     <color name="colorSuccess">#00C851</color>
     <color name="colorSuccessDark">#007E33</color>
@@ -30,9 +32,13 @@
     <color name="colorDarkOrange">#F57C00</color>
     <color name="colorOrange">#FF9800</color>
     <color name="colorDeepOrangeAccent">#448AFF</color>
+    <!--
     <color name="darkBlue">#1976D2</color>
     <color name="blue">#005fb3</color>
     <color name="lightBlue">#106fc2</color>
+    -->
     <color name="accentPink">#c87ee7</color>
     <color name="transparent">#000000aa</color>
+    <color name="primaryDarkBlue">#1A237E</color>
+    <color name="primaryBlue">#283593</color>
 </resources>

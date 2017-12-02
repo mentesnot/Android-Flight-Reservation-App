@@ -1,9 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorLightGray"
     tools:context="com.techprax.comp3074_project13.ProfileActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                android:background="@color/backgroundDefault">
+
+
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:src="@drawable/placeholder"/>
+
+                <TextView
+                    android:id="@+id/txtFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:fontFamily="sans-serif-thin"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="John Doe"/>
+
+                <ImageButton
+                    android:id="@+id/btnEditProfilePicture"
+                    android:layout_height="30dip"
+                    android:layout_width="30dip"
+                    android:layout_gravity="right"
+                    android:background="@drawable/ic_add_a_photo_black_24dp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                android:background="@color/backgroundDefault">
+
+                <TextView
+                    android:id="@+id/profileHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="25sp"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="Account Information" />
+
+
+                <TextView
+                    android:id="@+id/txtClientFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="FirstName: John"/>
+
+                <TextView
+                    android:id="@+id/txtClientLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="Las name: Doe"/>
+                <TextView
+                    android:id="@+id/txtClientEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="Email: john.doe@gmail.com"/>
+                <TextView
+                    android:id="@+id/txtCreditCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="Credit Card: **** **** **** 2048"/>
+
+
+                <ImageButton
+                    android:id="@+id/btnEditProfile"
+                    android:layout_height="30dip"
+                    android:layout_width="30dip"
+                    android:layout_gravity="right"
+                    android:background="@drawable/ic_edit_black_24dp" />
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>
