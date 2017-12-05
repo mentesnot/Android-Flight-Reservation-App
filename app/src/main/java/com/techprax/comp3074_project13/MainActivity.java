@@ -138,6 +138,12 @@ public class MainActivity extends AppCompatActivity
         btnSearch = (Button) findViewById(R.id.btnSearch);
 
 
+        //date picker listeners
+        oneWayDepartureDatePickerListener = getOneWayDepartureDatePickerListener();
+        roundDepartureDatePickerListener = getRoundDepartureDatePickerListener();
+        roundReturnDatePickerListener = getRoundReturnDatePickerListener();
+
+
         //one way departure date picker on click listener
         btnOneWayDepartureDatePicker.setOnClickListener(new View.OnClickListener() {
 
@@ -169,11 +175,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        oneWayDepartureDatePickerListener = getOneWayDepartureDatePickerListener();
 
-        roundDepartureDatePickerListener = getRoundDepartureDatePickerListener();
-
-        roundReturnDatePickerListener = getRoundReturnDatePickerListener();
 
         //one way class selector on click listener
         btnOneWayClass.setOnClickListener(new View.OnClickListener() {
@@ -461,7 +463,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public Dialog datePickerDialog(int datePickerId) {
+    public DatePickerDialog datePickerDialog(int datePickerId) {
 
         switch (datePickerId) {
             case ONE_WAY_DEPARTURE_DATE_PICKER:

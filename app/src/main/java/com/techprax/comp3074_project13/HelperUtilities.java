@@ -95,7 +95,7 @@ public class HelperUtilities {
     public static String formatDate(int y, int m, int d){
 
         try{
-            String date = d + "/" + m +"/" + y;
+            String date = d + "/" + (m+1) +"/" + y;
             Date date1= new SimpleDateFormat("dd/MM/yyyy").parse(date);
             DateFormat fullDf = DateFormat.getDateInstance(DateFormat.FULL);
 
@@ -116,7 +116,7 @@ public class HelperUtilities {
 
     public static int currentMonth(){
         Calendar c = Calendar.getInstance();
-        return c.get(Calendar.MONTH) + 1;
+        return c.get(Calendar.MONTH);
     }
 
     public static int currentDay(){
