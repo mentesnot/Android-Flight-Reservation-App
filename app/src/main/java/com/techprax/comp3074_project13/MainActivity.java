@@ -261,10 +261,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_itinerary) {
             Intent intent = new Intent(getApplicationContext(), ItineraryActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_booked_flights) {
-            Intent intent = new Intent(getApplicationContext(), BookedFlightActivity.class);
-            startActivity(intent);
-
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);
@@ -515,7 +511,7 @@ public class MainActivity extends AppCompatActivity
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
-                //get round trip departure date here
+                //get round trip return date here
 
                 btnRoundReturnDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
             }
