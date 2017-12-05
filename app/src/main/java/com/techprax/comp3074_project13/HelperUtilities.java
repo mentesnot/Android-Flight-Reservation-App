@@ -92,6 +92,21 @@ public class HelperUtilities {
         return DateFormat.getDateInstance().format(new Date());
 
     }
+    public static String formatDate(int y, int m, int d){
+
+        try{
+            String date = d + "/" + m +"/" + y;
+            Date date1= new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            DateFormat fullDf = DateFormat.getDateInstance(DateFormat.FULL);
+
+            return fullDf.format(date1);
+
+        }catch(Exception e){
+
+        }
+
+        return null;
+    }
 
     public static int currentYear(){
 
@@ -101,7 +116,7 @@ public class HelperUtilities {
 
     public static int currentMonth(){
         Calendar c = Calendar.getInstance();
-        return c.get(Calendar.MONTH);
+        return c.get(Calendar.MONTH) + 1;
     }
 
     public static int currentDay(){

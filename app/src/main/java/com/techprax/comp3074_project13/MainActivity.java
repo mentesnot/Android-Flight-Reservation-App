@@ -20,11 +20,26 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        DatePickerDialog.OnDateSetListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DatePickerDialog.OnDateSetListener oneWayDepartureDatePickerListener,
+            roundDepartureDatePickerListener,
+            roundReturnDatePickerListener;
+    private DatePickerDialog datePickerDialog;
+
+    private int year = HelperUtilities.currentYear();
+    private int month = HelperUtilities.currentMonth();
+    private int day = HelperUtilities.currentDay();
+    private final int ONE_WAY_DEPARTURE_DATE_PICKER = R.id.btnOneWayDepartureDatePicker;
+    private final int ROUND_DEPARTURE_DATE_PICKER = R.id.btnRoundDepartureDatePicker;
+    private final int ROUND_RETURN_DATE_PICKER = R.id.btnRoundReturnDatePicker;
     private int travellerCount = 1;
+    private int roundTravellerCount = 1;
     private TextView numTraveller;
     private ImageButton imgBtnAdd;
     private ImageButton imgBtnRemove;
@@ -45,7 +60,8 @@ public class MainActivity extends AppCompatActivity
 
     private Button btnSearch;
 
-    private int tempID = 0;
+    private int tempOneWaySelectedClassID = 0;
+    private int tempRoundSelectedClassID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,23 +118,16 @@ public class MainActivity extends AppCompatActivity
         btnRoundClass = (Button) findViewById(R.id.btnRoundClass);
         btnRoundNumTraveller = (Button) findViewById(R.id.btnRoundTraveller);
 
-        btnSearch = (Button)findViewById(R.id.btnSearch);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
 
 
         //one way departure date picker on click listener
         btnOneWayDepartureDatePicker.setOnClickListener(new View.OnClickListener() {
 
-            //date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    MainActivity.this, MainActivity.this,
-                    HelperUtilities.currentYear(),
-                    HelperUtilities.currentMonth(),
-                    HelperUtilities.currentDay());
-
             @Override
             public void onClick(View view) {
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.show();
+
+                datePickerDialog(ONE_WAY_DEPARTURE_DATE_PICKER).show();
 
             }
         });
@@ -126,42 +135,34 @@ public class MainActivity extends AppCompatActivity
         //round trip departure date picker on click listener
         btnRoundDepartureDatePicker.setOnClickListener(new View.OnClickListener() {
 
-            //date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    MainActivity.this, MainActivity.this,
-                    HelperUtilities.currentYear(),
-                    HelperUtilities.currentMonth(),
-                    HelperUtilities.currentDay());
-
             @Override
             public void onClick(View view) {
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.show();
+
+                datePickerDialog(ROUND_DEPARTURE_DATE_PICKER).show();
             }
         });
 
         //round trip return date picker on click listener
         btnRoundReturnDatePicker.setOnClickListener(new View.OnClickListener() {
 
-            //date picker dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    MainActivity.this, MainActivity.this,
-                    HelperUtilities.currentYear(),
-                    HelperUtilities.currentMonth(),
-                    HelperUtilities.currentDay());
-
             @Override
             public void onClick(View view) {
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.show();
+
+                datePickerDialog(ROUND_RETURN_DATE_PICKER).show();
             }
         });
+
+        oneWayDepartureDatePickerListener = getOneWayDepartureDatePickerListener();
+
+        roundDepartureDatePickerListener = getRoundDepartureDatePickerListener();
+
+        roundReturnDatePickerListener = getRoundReturnDatePickerListener();
 
         //one way class selector on click listener
         btnOneWayClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                classPickerDialog().show();
+                oneWayClassPickerDialog().show();
             }
         });
 
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                travellerNumberDialog().show();
+                oneWayNumTravellerDialog().show();
             }
         });
 
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         btnRoundClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                classPickerDialog().show();
+                roundClassPickerDialog().show();
             }
         });
 
@@ -187,11 +188,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                travellerNumberDialog().show();
+                roundNumTravellerDialog().show();
             }
         });
 
-        //searches flights on click
+        //searches available flights on click
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -269,27 +270,19 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    //listens datepicker dialog selected date
-    @Override
-    public void onDateSet(DatePicker datePicker, int startYear, int starthMonth, int startDay) {
-
-        btnOneWayDepartureDatePicker.setText(startYear + "/" + (starthMonth + 1) + "/" + startDay);
-
-    }
-
-    //class picker dialog
-    public Dialog classPickerDialog() {
+    //one way class picker dialog
+    public Dialog oneWayClassPickerDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final CharSequence[] classList = {"Economy", "Business"}; //temp data, should be retrieved from database
 
 
         builder.setTitle("Select Class")
-                .setSingleChoiceItems(classList, tempID, new DialogInterface
+                .setSingleChoiceItems(classList, tempOneWaySelectedClassID, new DialogInterface
                         .OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
-                        tempID = id;
+                        tempOneWaySelectedClassID = id;
                         //get selected class here
                         btnOneWayClass.setText(classList[id].toString());
 
@@ -309,19 +302,57 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-        btnOneWayClass.setText(classList[tempID].toString());
+        btnOneWayClass.setText(classList[tempOneWaySelectedClassID].toString());
 
 
         return builder.create();
     }
 
-    //number of travellers dialog
-    public Dialog travellerNumberDialog() {
+
+    //round class picker dialog
+    public Dialog roundClassPickerDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final CharSequence[] classList = {"Economy", "Business"}; //temp data, should be retrieved from database
+
+
+        builder.setTitle("Select Class")
+                .setSingleChoiceItems(classList, tempRoundSelectedClassID, new DialogInterface
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+                        tempRoundSelectedClassID = id;
+                        //get selected class here
+                        btnRoundClass.setText(classList[id].toString());
+
+
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        btnRoundClass.setText(classList[tempRoundSelectedClassID].toString());
+
+
+        return builder.create();
+    }
+
+    //number of travellers dialog (one way)
+    public Dialog oneWayNumTravellerDialog() {
 
 
         dialoglayout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
 
         builder.setTitle("Number of travellers")
                 .setView(dialoglayout)
@@ -366,18 +397,113 @@ public class MainActivity extends AppCompatActivity
         return builder.create();
     }
 
-    /*public DatePickerDialog datePickerDialog(){
+    //number of travellers dialog (round trip)
+    public Dialog roundNumTravellerDialog() {
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                MainActivity.this, MainActivity.this,
-                HelperUtilities.currentYear(),
-                HelperUtilities.currentMonth(),
-                HelperUtilities.currentDay());
 
-        return datePickerDialog;
+        dialoglayout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        builder.setTitle("Number of travellers")
+                .setView(dialoglayout)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //get number of traveller here
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        imgBtnRemove = (ImageButton) dialoglayout.findViewById(R.id.imgBtnRemove);
+        imgBtnAdd = (ImageButton) dialoglayout.findViewById(R.id.imgBtnAdd);
+        numTraveller = (TextView) dialoglayout.findViewById(R.id.txtNumber);
+
+        imgBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                roundTravellerCount++;
+                numTraveller.setText(String.valueOf(roundTravellerCount));
+                btnRoundNumTraveller.setText(String.valueOf(roundTravellerCount) + " Traveller");
+            }
+        });
+
+        imgBtnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (roundTravellerCount > 1) {
+                    roundTravellerCount--;
+                }
+                numTraveller.setText(String.valueOf(roundTravellerCount));
+                btnRoundNumTraveller.setText(String.valueOf(roundTravellerCount) + " Traveller");
+            }
+        });
+
+        numTraveller.setText(String.valueOf(roundTravellerCount));
+
+        return builder.create();
     }
-*/
+
+
+    public Dialog datePickerDialog(int datePickerId) {
+
+        switch (datePickerId) {
+            case ONE_WAY_DEPARTURE_DATE_PICKER:
+
+                datePickerDialog = new DatePickerDialog(this, oneWayDepartureDatePickerListener, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                return datePickerDialog;
+
+            case ROUND_DEPARTURE_DATE_PICKER:
+
+                datePickerDialog = new DatePickerDialog(this, roundDepartureDatePickerListener, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                return datePickerDialog;
+
+            case ROUND_RETURN_DATE_PICKER:
+
+                datePickerDialog = new DatePickerDialog(this, roundReturnDatePickerListener, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                return datePickerDialog;
+        }
+        return null;
+    }
+
+    public DatePickerDialog.OnDateSetListener getOneWayDepartureDatePickerListener() {
+        return new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
+                //get one way departure date here
+
+                btnOneWayDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
+            }
+        };
+    }
+
+    public DatePickerDialog.OnDateSetListener getRoundDepartureDatePickerListener() {
+        return new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
+                //get round trip departure date here
+
+                btnRoundDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
+            }
+        };
+    }
+
+    public DatePickerDialog.OnDateSetListener getRoundReturnDatePickerListener() {
+        return new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
+                //get round trip departure date here
+
+                btnRoundReturnDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
+            }
+        };
+    }
 
 
 }
