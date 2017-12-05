@@ -27,30 +27,46 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //date picker listeners
     private DatePickerDialog.OnDateSetListener oneWayDepartureDatePickerListener,
             roundDepartureDatePickerListener,
             roundReturnDatePickerListener;
+
+    //date picker dialog
     private DatePickerDialog datePickerDialog;
 
+    //current date
     private int year = HelperUtilities.currentYear();
     private int month = HelperUtilities.currentMonth();
     private int day = HelperUtilities.currentDay();
+
+    //id of date picker controls
     private final int ONE_WAY_DEPARTURE_DATE_PICKER = R.id.btnOneWayDepartureDatePicker;
     private final int ROUND_DEPARTURE_DATE_PICKER = R.id.btnRoundDepartureDatePicker;
     private final int ROUND_RETURN_DATE_PICKER = R.id.btnRoundReturnDatePicker;
-    private int travellerCount = 1;
+
+    //traveller count
+    private int oneWayTravellerCount = 1;
     private int roundTravellerCount = 1;
+
+    //traveller count view
     private TextView numTraveller;
+
+    //add and remove image button controls in the dialog
     private ImageButton imgBtnAdd;
     private ImageButton imgBtnRemove;
-    private View dialoglayout;
 
+    //custom dialog view
+    private View dialogLayout;
+
+    //one way UI controls
     private TextView txtOneWayFrom;
     private TextView txtOneWayTo;
     private Button btnOneWayDepartureDatePicker;
     private Button btnOneWayClass;
     private Button btnOneWayNumTraveller;
 
+    //round trip UI controls
     private TextView txtRoundFrom;
     private TextView txtRoundTo;
     private Button btnRoundDepartureDatePicker;
@@ -58,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     private Button btnRoundClass;
     private Button btnRoundNumTraveller;
 
+    //search button
     private Button btnSearch;
 
     private int tempOneWaySelectedClassID = 0;
@@ -351,11 +368,11 @@ public class MainActivity extends AppCompatActivity
     public Dialog oneWayNumTravellerDialog() {
 
 
-        dialoglayout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+        dialogLayout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Number of travellers")
-                .setView(dialoglayout)
+                .setView(dialogLayout)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //get number of traveller here
@@ -368,31 +385,31 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-        imgBtnRemove = (ImageButton) dialoglayout.findViewById(R.id.imgBtnRemove);
-        imgBtnAdd = (ImageButton) dialoglayout.findViewById(R.id.imgBtnAdd);
-        numTraveller = (TextView) dialoglayout.findViewById(R.id.txtNumber);
+        imgBtnRemove = (ImageButton) dialogLayout.findViewById(R.id.imgBtnRemove);
+        imgBtnAdd = (ImageButton) dialogLayout.findViewById(R.id.imgBtnAdd);
+        numTraveller = (TextView) dialogLayout.findViewById(R.id.txtNumber);
 
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                travellerCount++;
-                numTraveller.setText(String.valueOf(travellerCount));
-                btnOneWayNumTraveller.setText(String.valueOf(travellerCount) + " Traveller");
+                oneWayTravellerCount++;
+                numTraveller.setText(String.valueOf(oneWayTravellerCount));
+                btnOneWayNumTraveller.setText(String.valueOf(oneWayTravellerCount) + " Traveller");
             }
         });
 
         imgBtnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (travellerCount > 1) {
-                    travellerCount--;
+                if (oneWayTravellerCount > 1) {
+                    oneWayTravellerCount--;
                 }
-                numTraveller.setText(String.valueOf(travellerCount));
-                btnOneWayNumTraveller.setText(String.valueOf(travellerCount) + " Traveller");
+                numTraveller.setText(String.valueOf(oneWayTravellerCount));
+                btnOneWayNumTraveller.setText(String.valueOf(oneWayTravellerCount) + " Traveller");
             }
         });
 
-        numTraveller.setText(String.valueOf(travellerCount));
+        numTraveller.setText(String.valueOf(oneWayTravellerCount));
 
         return builder.create();
     }
@@ -401,11 +418,11 @@ public class MainActivity extends AppCompatActivity
     public Dialog roundNumTravellerDialog() {
 
 
-        dialoglayout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+        dialogLayout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Number of travellers")
-                .setView(dialoglayout)
+                .setView(dialogLayout)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //get number of traveller here
@@ -418,9 +435,9 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-        imgBtnRemove = (ImageButton) dialoglayout.findViewById(R.id.imgBtnRemove);
-        imgBtnAdd = (ImageButton) dialoglayout.findViewById(R.id.imgBtnAdd);
-        numTraveller = (TextView) dialoglayout.findViewById(R.id.txtNumber);
+        imgBtnRemove = (ImageButton) dialogLayout.findViewById(R.id.imgBtnRemove);
+        imgBtnAdd = (ImageButton) dialogLayout.findViewById(R.id.imgBtnAdd);
+        numTraveller = (TextView) dialogLayout.findViewById(R.id.txtNumber);
 
         imgBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
