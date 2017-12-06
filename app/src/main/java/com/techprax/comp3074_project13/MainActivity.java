@@ -34,11 +34,14 @@ public class MainActivity extends AppCompatActivity
 
     //date picker dialog
     private DatePickerDialog datePickerDialog;
+    private int datePickerOneCallCnt = 0;
+    private int datePickerTwoCallCnt = 0;
+    private int datePickerThreeCallCnt = 0;
 
     //current date
-    private int year = HelperUtilities.currentYear();
-    private int month = HelperUtilities.currentMonth();
-    private int day = HelperUtilities.currentDay();
+    private int year;
+    private int month;
+    private int day;
 
     //id of date picker controls
     private final int ONE_WAY_DEPARTURE_DATE_PICKER = R.id.btnOneWayDepartureDatePicker;
@@ -138,6 +141,11 @@ public class MainActivity extends AppCompatActivity
         btnSearch = (Button) findViewById(R.id.btnSearch);
 
 
+        year = HelperUtilities.currentYear();
+        month = HelperUtilities.currentMonth();
+        day = HelperUtilities.currentDay();
+
+
         //date picker listeners
         oneWayDepartureDatePickerListener = getOneWayDepartureDatePickerListener();
         roundDepartureDatePickerListener = getRoundDepartureDatePickerListener();
@@ -151,6 +159,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 datePickerDialog(ONE_WAY_DEPARTURE_DATE_PICKER).show();
+                datePickerOneCallCnt++;
 
             }
         });
@@ -162,6 +171,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 datePickerDialog(ROUND_DEPARTURE_DATE_PICKER).show();
+                datePickerTwoCallCnt++;
             }
         });
 
@@ -172,6 +182,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 datePickerDialog(ROUND_RETURN_DATE_PICKER).show();
+                datePickerThreeCallCnt++;
             }
         });
 
@@ -467,20 +478,25 @@ public class MainActivity extends AppCompatActivity
 
         switch (datePickerId) {
             case ONE_WAY_DEPARTURE_DATE_PICKER:
-
-                datePickerDialog = new DatePickerDialog(this, oneWayDepartureDatePickerListener, year, month, day);
+                if(datePickerOneCallCnt == 0){
+                    datePickerDialog = new DatePickerDialog(this, oneWayDepartureDatePickerListener, year, month, day);
+                }
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 return datePickerDialog;
 
             case ROUND_DEPARTURE_DATE_PICKER:
 
-                datePickerDialog = new DatePickerDialog(this, roundDepartureDatePickerListener, year, month, day);
+                if(datePickerTwoCallCnt == 0){
+                    datePickerDialog = new DatePickerDialog(this, roundDepartureDatePickerListener, year, month, day);
+                }
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 return datePickerDialog;
 
             case ROUND_RETURN_DATE_PICKER:
 
-                datePickerDialog = new DatePickerDialog(this, roundReturnDatePickerListener, year, month, day);
+                if(datePickerThreeCallCnt == 0){
+                    datePickerDialog = new DatePickerDialog(this, roundReturnDatePickerListener, year, month, day);
+                }
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 return datePickerDialog;
         }
@@ -492,6 +508,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
                 //get one way departure date here
+
 
                 btnOneWayDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
             }
