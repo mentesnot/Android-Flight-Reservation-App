@@ -3,8 +3,13 @@ package com.techprax.comp3074_project13;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,10 +27,18 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Calendar;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    private SharedPreferences sharedPreferences;
+
+    private SQLiteOpenHelper databaseHelper;
+    private SQLiteDatabase db;
+    private Cursor cursor;
+    private Intent intent;
+
+    private int currentTab;
 
     //date picker listeners
     private DatePickerDialog.OnDateSetListener oneWayDepartureDatePickerListener,
@@ -82,6 +95,7 @@ public class MainActivity extends AppCompatActivity
 
     private int tempOneWaySelectedClassID = 0;
     private int tempRoundSelectedClassID = 0;
+    private String oneWayDepartureDate, roundDepartureDate, roundReturnDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +115,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //tab host manager
-        TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
+        final TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
         tabHost.setup();
 
         //Tab 1
@@ -121,6 +135,16 @@ public class MainActivity extends AppCompatActivity
             TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(getResources().getColor(R.color.colorInverted));
         }
+
+
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String s) {
+                currentTab = tabHost.getCurrentTab();
+
+                //Toast.makeText(getApplicationContext(), String.valueOf(currentTab), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //one way form
         txtOneWayFrom = (TextView) findViewById(R.id.txtOneWayFrom);
@@ -187,7 +211,6 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
         //one way class selector on click listener
         btnOneWayClass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,10 +249,17 @@ public class MainActivity extends AppCompatActivity
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //call search method here
+
+                if (currentTab == 0) {
+                    searchOneWayFlight();
+
+                } else if (currentTab == 1) {
+                    searchRoundFlight();
+                }
             }
         });
-
 
     }
 
@@ -478,7 +508,7 @@ public class MainActivity extends AppCompatActivity
 
         switch (datePickerId) {
             case ONE_WAY_DEPARTURE_DATE_PICKER:
-                if(datePickerOneCallCnt == 0){
+                if (datePickerOneCallCnt == 0) {
                     datePickerDialog = new DatePickerDialog(this, oneWayDepartureDatePickerListener, year, month, day);
                 }
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -486,7 +516,7 @@ public class MainActivity extends AppCompatActivity
 
             case ROUND_DEPARTURE_DATE_PICKER:
 
-                if(datePickerTwoCallCnt == 0){
+                if (datePickerTwoCallCnt == 0) {
                     datePickerDialog = new DatePickerDialog(this, roundDepartureDatePickerListener, year, month, day);
                 }
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -494,7 +524,7 @@ public class MainActivity extends AppCompatActivity
 
             case ROUND_RETURN_DATE_PICKER:
 
-                if(datePickerThreeCallCnt == 0){
+                if (datePickerThreeCallCnt == 0) {
                     datePickerDialog = new DatePickerDialog(this, roundReturnDatePickerListener, year, month, day);
                 }
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -509,8 +539,9 @@ public class MainActivity extends AppCompatActivity
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
                 //get one way departure date here
 
-
+                oneWayDepartureDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
                 btnOneWayDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
+
             }
         };
     }
@@ -520,7 +551,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
                 //get round trip departure date here
-
+                roundDepartureDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
                 btnRoundDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
             }
         };
@@ -531,10 +562,55 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
                 //get round trip return date here
-
+                roundReturnDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
                 btnRoundReturnDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
             }
         };
+    }
+
+    public void searchOneWayFlight() {
+
+        //Toast.makeText(getApplicationContext(), "Im working", Toast.LENGTH_SHORT).show();
+
+        intent = new Intent(getApplicationContext(), OneWayFlightListActivity.class);
+
+        sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+        getApplicationContext().getSharedPreferences("PREFS", 0).edit().clear().commit();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("CURRENT_TAB", currentTab);
+        editor.putString("ORIGIN", txtOneWayFrom.getText().toString());
+        editor.putString("DESTINATION", txtOneWayTo.getText().toString());
+        editor.putString("DEPARTURE_DATE", oneWayDepartureDate);
+        editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
+
+        editor.commit();
+
+        startActivity(intent);
+
+        //Toast.makeText(getApplicationContext(), cursor.getString(7), Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void searchRoundFlight() {
+        intent = new Intent(getApplicationContext(), OutboundFlightListActivity.class);
+
+        sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+        getApplicationContext().getSharedPreferences("PREFS", 0).edit().clear().commit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("CURRENT_TAB", currentTab);
+        editor.putString("ORIGIN", txtRoundFrom.getText().toString());
+        editor.putString("DESTINATION", txtRoundTo.getText().toString());
+        editor.putString("DEPARTURE_DATE", roundDepartureDate);
+        editor.putString("RETURN_DATE", roundReturnDate);
+        editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
+
+
+        editor.commit();
+
+        startActivity(intent);
     }
 
 

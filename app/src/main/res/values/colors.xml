@@ -17,7 +17,7 @@
     <color name="colorInfo">#03A9F4</color>
     <color name="colorWarning">#ffbb33</color>
     <color name="colorWarningDark">#FF8800</color>
-    <color name="colorDanger">#CC0000</color>
+    <color name="colorDanger">#F44336</color>
     <color name="colorInverted">#ffffff</color>
     <color name="colorTealDark">#00796B</color>
     <color name="colorTeal">#009688</color>

@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/colorLightGray"
     tools:context="com.techprax.comp3074_project13.ItineraryActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+           <!-- <ListView
+                android:id="@+id/flightList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/colorLightGray"
+                android:dividerHeight="10dp"/>
+-->
+
+
+</LinearLayout>
