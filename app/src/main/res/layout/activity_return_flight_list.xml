@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorLightGray"
     tools:context="com.techprax.comp3074_project13.ReturnFlightListActivity">
 
     <RelativeLayout
@@ -15,12 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            android:layout_above="@+id/btnReturnSort">
             <ListView
                 android:id="@+id/returnFlightList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bgrounded"
                 android:divider="@color/colorLightGray"
                 android:dividerHeight="10dp"/>
 
@@ -32,7 +33,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnSelectReturn"
+            android:id="@+id/btnReturnSort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

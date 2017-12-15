@@ -3,7 +3,7 @@ package com.techprax.comp3074_project13;
 
 import java.util.Date;
 
-public class Flight extends Airline{
+public class Flight {
 
     private int flightID;
     private int flightNumber;
@@ -13,16 +13,16 @@ public class Flight extends Airline{
     private Date arrivalDate;
     private Date departureTime;
     private Date arrivalTime;
+    private Double fare;
     private Double totalCost;
     private int travelTime;
     private String flightClass;
 
 
-    public Flight(String airline, int flightNumber, String origin, String destination, Date departureDate,
-                  Date arrivalDate, Date departureTime, Date arrivalTime, Double totalCost, int travelTime,
+    public Flight(int flightNumber, String origin, String destination, Date departureDate,
+                  Date arrivalDate, Date departureTime, Date arrivalTime, Double fare, Double totalCost, int travelTime,
                   String flightClass) {
 
-        super(airline);
         this.flightNumber = flightNumber;
         this.origin = origin;
         this.destination = destination;
@@ -30,16 +30,25 @@ public class Flight extends Airline{
         this.arrivalDate = arrivalDate;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
+        this.fare = fare;
         this.totalCost = totalCost;
         this.travelTime = travelTime;
         this.flightClass = flightClass;
     }
 
-    public Flight(String airline, String origin, String destination, Date departureDate) {
-        super(airline);
+    public Flight(String origin, String destination, Date departureDate) {
+
         this.origin = origin;
         this.destination = destination;
         this.departureDate = departureDate;
+    }
+
+    public int getFlightID() {
+        return flightID;
+    }
+
+    public void setFlightID(int flightID) {
+        this.flightID = flightID;
     }
 
     public int getFlightNumber() {
@@ -96,6 +105,14 @@ public class Flight extends Airline{
 
     public void setArrivalTime(Date arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public Double getFare() {
+        return fare;
+    }
+
+    public void setFare(Double fare) {
+        this.fare = fare;
     }
 
     public Double getTotalCost() {

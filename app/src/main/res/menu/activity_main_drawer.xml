@@ -8,10 +8,6 @@
             android:id="@+id/nav_itinerary"
             android:icon="@drawable/ic_view_list_black_24dp"
             android:title="Itinerary" />
-        <item
-            android:id="@+id/nav_booked_flights"
-            android:icon="@drawable/ic_playlist_add_check_black_24dp"
-            android:title="Booked Flights" />
 
     </group>
 

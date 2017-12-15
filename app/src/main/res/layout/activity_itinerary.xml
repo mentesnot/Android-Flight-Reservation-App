@@ -10,13 +10,12 @@
     tools:context="com.techprax.comp3074_project13.ItineraryActivity">
 
 
-           <!-- <ListView
-                android:id="@+id/flightList"
+            <ListView
+                android:id="@+id/itinerary"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@color/colorLightGray"
                 android:dividerHeight="10dp"/>
--->
 
 
 </LinearLayout>

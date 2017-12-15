@@ -3,16 +3,24 @@ package com.techprax.comp3074_project13;
 import java.util.Date;
 
 
-public class Itinerary extends Flight{
+public class Itinerary {
 
     private int itineraryID;
+    private Date timeStamp;
 
-    public Itinerary(String airline, int flightNumber, String origin, String destination,
-                     Date departureDate, Date arrivalDate, Date departureTime, Date arrivalTime,
-                     Double totalCost, int travelTime, String flightClass) {
-        super(airline, flightNumber, origin, destination, departureDate, arrivalDate,
-                departureTime, arrivalTime, totalCost, travelTime, flightClass);
+    public int getItineraryID() {
+        return itineraryID;
     }
 
+    public void setItineraryID(int itineraryID) {
+        this.itineraryID = itineraryID;
+    }
 
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 }

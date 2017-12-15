@@ -1,7 +1,10 @@
 package com.techprax.comp3074_project13;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -57,16 +60,14 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         returnDate = sharedPreferences.getString("RETURN_DATE", "");
         flightClass = sharedPreferences.getString("FLIGHT_CLASS", "");
 
-        Toast.makeText(getApplicationContext(), origin, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), origin, Toast.LENGTH_SHORT).show();
 
 
-        //txtMessage = (TextView) findViewById(R.id.txtMessage);
-        oneWayFlightList = (ListView) findViewById(R.id.listFlightList);
+       // txtMessage = (TextView) findViewById(R.id.txtMessage);
+        oneWayFlightList = (ListView) findViewById(R.id.onewayFlightList);
 
 
         searchOneWayFlight();
-
-
 
     }
 
@@ -75,16 +76,16 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         try {
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getReadableDatabase();
+            actionBar.setTitle("Oneway flight list");
+            actionBar.setSubtitle(origin + " -> " + destination);
 
             cursor = DatabaseHelper.searchFlight(db, origin, destination,
                     departureDate, flightClass);
 
             if (cursor != null && cursor.getCount() > 0) {
 
-                Toast.makeText(getApplicationContext(), "Im working", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Im working", Toast.LENGTH_SHORT).show();
 
-                actionBar.setTitle("Select flight");
-                actionBar.setSubtitle(origin + " -> " + destination);
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),
                         R.layout.custom_list_view,
@@ -98,8 +99,9 @@ public class OneWayFlightListActivity extends AppCompatActivity {
                 oneWayFlightList.setAdapter(listAdapter);
 
             } else {
-                //txtMessage.setText("No flight found.");
-                Toast.makeText(getApplicationContext(), "Flight unavailable", Toast.LENGTH_SHORT).show();
+                //txtMessage.setText("The specified flight is not available. Please try again later.");
+                //Toast.makeText(getApplicationContext(), "Flight unavailable", Toast.LENGTH_SHORT).show();
+                flightNotFoundDialog().show();
             }
 
             oneWayFlightList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,7 +111,7 @@ public class OneWayFlightListActivity extends AppCompatActivity {
                     oneWayFightID = (int) id;
                     Toast.makeText(getApplicationContext(), String.valueOf(oneWayFightID), Toast.LENGTH_SHORT).show();
 
-                    intent = new Intent(getApplicationContext(), SelectedOneWayFlightActivity.class);
+                    intent = new Intent(getApplicationContext(), CheckOutActivity.class);
 
                     sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -128,4 +130,21 @@ public class OneWayFlightListActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Database error", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public Dialog flightNotFoundDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("The specified flight is not available. Please try again later.")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+        return builder.create();
+    }
+
 }

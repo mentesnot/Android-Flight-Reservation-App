@@ -1,6 +1,9 @@
 package com.techprax.comp3074_project13;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -53,8 +56,6 @@ public class ReturnFlightListActivity extends AppCompatActivity {
         returnDate = sharedPreferences.getString("RETURN_DATE", "");
         flightClass = sharedPreferences.getString("FLIGHT_CLASS", "");
 
-
-        txtMessage = (TextView) findViewById(R.id.txtMessageReturn);
         returnFlightList = (ListView) findViewById(R.id.returnFlightList);
 
         searchReturnFlight();
@@ -87,18 +88,26 @@ public class ReturnFlightListActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), String.valueOf(cursor.getInt(0)), Toast.LENGTH_SHORT).show();
 
             } else {
-                Toast.makeText(getApplicationContext(), "Flight not found", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Flight not found", Toast.LENGTH_SHORT).show();
+
+                flightNotFoundDialog().show();
             }
 
             returnFlightList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                    oneWayFightID = (int) id;
+                    returnFlightID = (int) id;
                     //Toast.makeText(getApplicationContext(), String.valueOf(oneWayFightID), Toast.LENGTH_SHORT).show();
 
-                    intent = new Intent(getApplicationContext(), SelectedReturnFlightActivity.class);
-                    intent.putExtra("SELECTED_FLIGHT_ID", oneWayFightID);
+                    intent = new Intent(getApplicationContext(), CheckOutActivity.class);
+
+                    sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.remove("RETURN_FLIGHT_ID");
+                    editor.putInt("RETURN_FLIGHT_ID", returnFlightID);
+
+                    editor.commit();
 
                     startActivity(intent);
                 }
@@ -109,6 +118,22 @@ public class ReturnFlightListActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Database error", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public Dialog flightNotFoundDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("The specified return flight is not available. Please try again later.")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+        return builder.create();
     }
 
 }

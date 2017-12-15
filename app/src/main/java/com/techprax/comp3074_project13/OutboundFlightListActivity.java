@@ -1,6 +1,9 @@
 package com.techprax.comp3074_project13;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -57,7 +60,6 @@ public class OutboundFlightListActivity extends AppCompatActivity {
         flightClass = sharedPreferences.getString("FLIGHT_CLASS", "");
 
 
-        txtMessage = (TextView) findViewById(R.id.txtOutboundMessage);
         flightList = (ListView) findViewById(R.id.outboundFlightList);
 
 
@@ -90,18 +92,24 @@ public class OutboundFlightListActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), String.valueOf(cursor.getInt(0)), Toast.LENGTH_SHORT).show();
 
             } else {
-                Toast.makeText(getApplicationContext(), "Flight not found", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Flight not found", Toast.LENGTH_SHORT).show();
+                flightNotFoundDialog().show();
             }
 
             flightList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                    oneWayFightID = (int) id;
-                    Toast.makeText(getApplicationContext(), String.valueOf(oneWayFightID), Toast.LENGTH_SHORT).show();
+                    outboundFlightID = (int) id;
+                    //Toast.makeText(getApplicationContext(), String.valueOf(oneWayFightID), Toast.LENGTH_SHORT).show();
 
-                    intent = new Intent(getApplicationContext(), SelectedOutboundFlightActivity.class);
-                    intent.putExtra("SELECTED_FLIGHT_ID", oneWayFightID);
+                    intent = new Intent(getApplicationContext(), ReturnFlightListActivity.class);
+                    sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.remove("OUTBOUND_FLIGHT_ID");
+                    editor.putInt("OUTBOUND_FLIGHT_ID", outboundFlightID);
+
+                    editor.commit();
 
                     startActivity(intent);
                 }
@@ -113,5 +121,22 @@ public class OutboundFlightListActivity extends AppCompatActivity {
         }
 
     }
+
+    public Dialog flightNotFoundDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("The specified outbound flight is not available. Please try again later.")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = new Intent(getApplicationContext(), ReturnFlightListActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+        return builder.create();
+    }
+
 
 }

@@ -4,7 +4,7 @@
     android:background="@drawable/bgrounded"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp">
+    android:padding="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,27 +15,31 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="6">
+
             <TextView
                 android:id="@+id/txtDepartureTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="5:40pm"/>
+                android:fontFamily="sans-serif-medium"
+                android:text="5:40pm"
+                android:textSize="20sp"
+                android:typeface="normal" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:typeface="normal"
+                android:textSize="20sp"
                 android:text="-"/>
             <TextView
                 android:id="@+id/txtArrivalTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:typeface="normal"
+                android:textSize="20sp"
                 android:text="6:59pm"/>
 
         </LinearLayout>
@@ -47,20 +51,22 @@
             android:layout_weight="1">
 
             <TextView
-                android:layout_width="10dp"
+                android:layout_width="1dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
+                android:typeface="normal"
                 android:text="$"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
             <TextView
                 android:id="@+id/txtFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:typeface="normal"
                 android:layout_weight="1"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:textSize="20sp"
                 android:text="350"/>
 
         </LinearLayout>
@@ -73,21 +79,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="22sp"
-            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="18sp"
             android:text="WestJet"/>
         <TextView
             android:id="@+id/txtTravelTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:text="1h 19m"/>
         <TextView
             android:id="@+id/txtClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:text="Economy"/>
 </LinearLayout>

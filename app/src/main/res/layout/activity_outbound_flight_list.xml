@@ -17,19 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_above="@+id/btnOutboundSort"
             android:layout_margin="15dp">
             <ListView
                 android:id="@+id/outboundFlightList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bgrounded"
                 android:divider="@color/colorLightGray"
                 android:dividerHeight="10dp"/>
-
-            <TextView
-                android:id="@+id/txtOutboundMessage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
         </LinearLayout>
 

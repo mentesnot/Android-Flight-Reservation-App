@@ -27,6 +27,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity
         spec.setContent(R.id.tab2);
         spec.setIndicator("Round Trip");
         tabHost.addTab(spec);
+
 
         //tab text color
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {

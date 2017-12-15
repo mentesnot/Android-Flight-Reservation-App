@@ -72,7 +72,8 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CheckOutActivity"
+        <activity
+            android:name=".CheckOutActivity"
             android:label="Checkout"
             android:parentActivityName=".MainActivity">
 
@@ -80,7 +81,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techprax.comp3074_project13.MainActivity" />
-
         </activity>
         <activity
             android:name=".OneWayFlightListActivity"
@@ -95,14 +95,15 @@
         <activity
             android:name=".ReturnFlightListActivity"
             android:label="Return flight list"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".OutboundFlightListActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techprax.comp3074_project13.MainActivity" />
         </activity>
-        <activity android:name=".OutboundFlightListActivity"
+        <activity
+            android:name=".OutboundFlightListActivity"
             android:label="Outbound Flight list"
             android:parentActivityName=".MainActivity">
 
@@ -110,21 +111,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techprax.comp3074_project13.MainActivity" />
-
         </activity>
-        <activity
-            android:name=".SelectedOneWayFlightActivity"
-            android:label="Flight list"
-            android:parentActivityName=".OneWayFlightListActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techprax.comp3074_project13.MainActivity" />
-        </activity>
-        <activity android:name=".SelectedOutboundFlightActivity"
-            android:label="Select outbound flight"
-            android:parentActivityName=".OutboundFlightListActivity">
+        <activity android:name=".FlightDetailActivity"
+            android:label="Flight Detail"
+            android:parentActivityName=".ItineraryActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -132,17 +122,6 @@
                 android:value="com.techprax.comp3074_project13.MainActivity" />
 
         </activity>
-        <activity android:name=".SelectedReturnFlightActivity"
-            android:label="Select return flight"
-            android:parentActivityName=".ReturnFlightListActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.techprax.comp3074_project13.MainActivity" />
-
-        </activity>
-
     </application>
 
 </manifest>
