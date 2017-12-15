@@ -145,18 +145,18 @@ public class CheckoutRoundFragment extends Fragment {
 
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
+
                 flightNo.setText(cursor.getString(1));
                 origin.setText(cursor.getString(2));
                 destination.setText(cursor.getString(3));
                 departureDate.setText(cursor.getString(4));
-                departureTime.setText(cursor.getString(5));
-                arrivalTime.setText(cursor.getString(6));
-                flightDuration.setText(cursor.getString(7));
-                fare.setText(cursor.getString(8));
-                airline.setText(cursor.getString(9));
-                fare.setText("$" + cursor.getString(10));
-                totalFare.setText("$" + cursor.getString(10));
-                flightClass.setText(cursor.getString(11));
+                arrivalDate.setText(cursor.getString(5));
+                departureTime.setText(cursor.getString(6));
+                arrivalTime.setText(cursor.getString(7));
+                flightDuration.setText(cursor.getString(8));
+                fare.setText("$" + cursor.getString(9));
+                airline.setText(cursor.getString(10));
+                flightClass.setText(cursor.getString(12));
             }
 
         } catch (SQLiteException ex) {
@@ -177,11 +177,12 @@ public class CheckoutRoundFragment extends Fragment {
                 originReturn.setText(cursor.getString(2));
                 destinationReturn.setText(cursor.getString(3));
                 departureDateReturn.setText(cursor.getString(4));
-                departureTimeReturn.setText(cursor.getString(5));
-                arrivalTimeReturn.setText(cursor.getString(6));
-                flightDurationReturn.setText(cursor.getString(7));
-                airlineReturn.setText(cursor.getString(9));
-                flightClassReturn.setText(cursor.getString(11));
+                arrivalDateReturn.setText(cursor.getString(5));
+                departureTimeReturn.setText(cursor.getString(6));
+                arrivalTimeReturn.setText(cursor.getString(7));
+                flightDurationReturn.setText(cursor.getString(8));
+                airlineReturn.setText(cursor.getString(10));
+                flightClassReturn.setText(cursor.getString(12));
             }
 
         } catch (SQLiteException ex) {

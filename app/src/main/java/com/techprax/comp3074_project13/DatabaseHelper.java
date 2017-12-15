@@ -74,32 +74,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             insertAirline(db, "United");
             insertAirline(db, "WestJet");
 
-            insertFlight(db, 100001, "Toronto", "Ottawa", "2017-12-20", "12:10", "12:10", 350.00, 2, 1);
-            insertFlight(db, 100002, "Toronto", "Ottawa", "2017-12-20", "12:10", "12:10", 350.00, 2, 2);
-            insertFlight(db, 100003, "Toronto", "Ottawa", "2017-12-20", "12:10", "12:10", 350.00, 2, 3);
-            insertFlight(db, 100004, "Toronto", "Ottawa", "2017-12-20", "12:10", "12:10", 350.00, 2, 4);
-            insertFlight(db, 100005, "Toronto", "Ottawa", "2017-12-20", "12:10", "12:10", 350.00, 2, 5);
-            insertFlight(db, 100006, "Ottawa", "Toronto", "2017-12-21", "12:10", "12:10", 350.00, 2, 6);
-            insertFlight(db, 100007, "Edmonton", "Winnipeg", "2017-12-20", "12:10", "12:10", 350.00, 2, 3);
-            insertFlight(db, 100008, "Montreal", "Edmonton", "2017-12-20", "12:10", "12:10", 350.00, 2, 4);
-            insertFlight(db, 100009, "NewYork", "Edmonton", "2017-12-20", "12:10", "12:10", 350.00, 2, 5);
-            insertFlight(db, 100010, "Quebec City", "NewYork", "2017-12-20", "12:10", "12:10", 350.00, 2, 6);
-            insertFlight(db, 100011, "British Colombia", "Nova Scotia", "2017-12-20", "12:10", "12:10", 350.00, 2, 7);
-            insertFlight(db, 100012, "Los Angeles", "Ottawa", "2017-12-20", "12:10", "12:10", 350.00, 2, 8);
-            insertFlight(db, 100013, "Winnipeg", "Toronto", "2017-12-20", "12:10", "12:10", 350.00, 2, 9);
-            insertFlight(db, 100014, "Nova Scotia", "NewYork", "2017-12-20", "12:10", "12:10", 350.00, 2, 10);
+            insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 1);
+            insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 2);
+            insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 3);
+            insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 4);
+            insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 5);
+            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-20", "12:10", "12:10", 350.00, 2, 6);
+            insertFlight(db, "Edmonton", "Winnipeg", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 3);
+            insertFlight(db, "Montreal", "Edmonton", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 4);
+            insertFlight(db, "NewYork", "Edmonton", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 5);
+            insertFlight(db, "Quebec City", "NewYork", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 6);
+            insertFlight(db, "British Colombia", "Nova Scotia", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 7);
+            insertFlight(db, "Los Angeles", "Ottawa", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 8);
+            insertFlight(db, "Winnipeg", "Toronto", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 9);
+            insertFlight(db, "Nova Scotia", "NewYork", "2017-12-20", "2017-12-20", "12:10", "12:10", 350.00, 2, 10);
 
-            insertSeat(db, 100, "F", 1, 1);
-            insertSeat(db, 200, "F", 2, 1);
-            insertSeat(db, 200, "F", 3, 1);
-            insertSeat(db, 200, "F", 4, 1);
-            insertSeat(db, 200, "F", 5, 1);
-            insertSeat(db, 200, "F", 6, 1);
+            insertSeat(db, "F", 1, 1);
+            insertSeat(db, "F", 2, 1);
+            insertSeat(db, "F", 3, 1);
+            insertSeat(db, "F", 4, 1);
+            insertSeat(db, "F", 5, 1);
+            insertSeat(db, "F", 6, 1);
 
             insertFlightClass(db, "Economy");
             insertFlightClass(db, "Business");
 
-            insertClient(db, "John", "Doe", "76 Kendal Ave", "M5R 1L9", "Toronto", "ON", "Canada", "4164121000", "1232456598783241");
+            insertClient(db, "John", "Doe", "4164121000", "1232456598783241");
 
             insertAccount(db, "john@gmail.com", "password", 1);
 
@@ -116,10 +116,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String createFlight() {
         return "CREATE TABLE FLIGHT (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "FLIGHTNUMBER TEXT, " +
+                "FLIGHTNUMBER INTEGER IDENTITY (1000, 1), " +
                 "ORIGIN TEXT, " +
                 "DESTINATION TEXT, " +
                 "DEPARTUREDATE TEXT, " +
+                "ARRIVALDATE TEXT, " +
                 "DEPARTURETIME TEXT, " +
                 "ARRIVALTIME TEXT, " +
                 "FLIGHTDURATION INTEGER, " +
@@ -131,7 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String createSeat() {
         return "CREATE TABLE SEAT (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "SEATNUMBER TEXT, " +
+                "SEATNUMBER INTEGER IDENTITY (100, 1), " +
                 "SEAT_FLIGHT TEXT, " +
                 "STATUS TEXT, " +
                 "SEAT_FLIGHTCLASS TEXT, " +
@@ -150,11 +151,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "FIRSTNAME TEXT, " +
                 "LASTNAME TEXT, " +
-                "ADDRESS TEXT, " +
-                "POSTALCODE TEXT, " +
-                "CITY TEXT, " +
-                "PROVINCE TEXT, " +
-                "COUNTRY TEXT, " +
                 "PHONE TEXT, " +
                 "CREDITCARD TEXT, " +
                 "IMAGE BLOB);";
@@ -185,12 +181,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("AIRLINE", null, airlineValues);
     }
 
-    public void insertFlight(SQLiteDatabase db, int flightNumber, String origin, String destination, String departureDate, String departureTime, String arrivalTime, Double fare, int flightDuration, int airlineID) {
+    public void insertFlight(SQLiteDatabase db, String origin, String destination, String departureDate, String arrivalDate, String departureTime, String arrivalTime, Double fare, int flightDuration, int airlineID) {
         ContentValues flightValues = new ContentValues();
-        flightValues.put("FLIGHTNUMBER", flightNumber);
         flightValues.put("ORIGIN", origin);
         flightValues.put("DESTINATION", destination);
         flightValues.put("DEPARTUREDATE", departureDate);
+        flightValues.put("ARRIVALDATE", arrivalDate);
         flightValues.put("DEPARTURETIME", departureTime);
         flightValues.put("ARRIVALTIME", arrivalTime);
         flightValues.put("FARE", fare);
@@ -199,9 +195,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("FLIGHT", null, flightValues);
     }
 
-    public void insertSeat(SQLiteDatabase db, int seatNumber, String status, int flightID, int flightClassID) {
+    public void insertSeat(SQLiteDatabase db, String status, int flightID, int flightClassID) {
         ContentValues seatValues = new ContentValues();
-        seatValues.put("SEATNUMBER", seatNumber);
         seatValues.put("STATUS", status);
         seatValues.put("SEAT_FLIGHT", flightID);
         seatValues.put("SEAT_FLIGHTCLASS", flightClassID);
@@ -214,16 +209,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("FLIGHTCLASS", null, flightClassValues);
     }
 
-    public void insertClient(SQLiteDatabase db, String firstName, String lastName, String address, String postalCode,
-                             String city, String province, String country, String phone, String creditCard) {
+    public void insertClient(SQLiteDatabase db, String firstName, String lastName, String phone, String creditCard) {
         ContentValues clientValues = new ContentValues();
         clientValues.put("FIRSTNAME", firstName);
         clientValues.put("LASTNAME", lastName);
-        clientValues.put("ADDRESS", address);
-        clientValues.put("POSTALCODE", postalCode);
-        clientValues.put("CITY", city);
-        clientValues.put("PROVINCE", province);
-        clientValues.put("COUNTRY", country);
         clientValues.put("PHONE", phone);
         clientValues.put("CREDITCARD", creditCard);
         db.insert("CLIENT", null, clientValues);
@@ -245,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static Cursor selectFlightWithID(SQLiteDatabase db, int flightID) {
-        return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, DEPARTURETIME, " +
+        return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, ARRIVALDATE, DEPARTURETIME, " +
                 " ARRIVALTIME, FLIGHTDURATION, FARE, AIRLINENAME, SEATNUMBER, FLIGHTCLASSNAME " +
                 "FROM FLIGHT " +
                 "INNER JOIN AIRLINE " +
@@ -261,7 +250,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static Cursor searchFlight(SQLiteDatabase db, String origin, String destination,
                                       String departureDate, String flightClass) {
-        return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, DEPARTURETIME, " +
+        return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, ARRIVALDATE, DEPARTURETIME, " +
                 " ARRIVALTIME, FLIGHTDURATION, FARE, AIRLINENAME, SEATNUMBER, FLIGHTCLASSNAME " +
                 "FROM FLIGHT " +
                 "INNER JOIN AIRLINE " +
@@ -279,13 +268,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "' AND SEAT.STATUS = 'F'", null);
     }
 
-    public static Cursor selectItinerary(SQLiteDatabase db){
-        return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, DEPARTURETIME, " +
+    public static Cursor selectItinerary(SQLiteDatabase db) {
+        return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, ARRIVALDATE, DEPARTURETIME, " +
                 " ARRIVALTIME, FLIGHTDURATION, FARE, AIRLINENAME, SEATNUMBER, FLIGHTCLASSNAME " +
                 "FROM FLIGHT " +
                 "INNER JOIN AIRLINE " +
                 "ON FLIGHT.FLIGHT_AIRLINE = AIRLINE._id " +
-                 "INNER JOIN ITINERARY " +
+                "INNER JOIN ITINERARY " +
                 "ON  FLIGHT._id = ITINERARY.ITINERARY_FLIGHT " +
                 "INNER JOIN " +
                 "SEAT " +
@@ -295,14 +284,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "ON SEAT.SEAT_FLIGHTCLASS = FLIGHTCLASS._id ", null);
     }
 
-    public static void deleteItinerary(SQLiteDatabase db, int itineraryID){
-        db.delete("ITINERARY", " _id = ? ", new String []{String.valueOf(itineraryID)});
+    public static void deleteItinerary(SQLiteDatabase db, int itineraryID) {
+        db.delete("ITINERARY", " _id = ? ", new String[]{String.valueOf(itineraryID)});
     }
 
-    public static Cursor selectItineraryWithFlightID(SQLiteDatabase db, int flightID){
-       return db.query("ITINERARY", null, " ITINERARY.ITINERARY_FLIGHT = ? ",
-               new String[]{String.valueOf(flightID)}, null, null, null, null);
+    public static Cursor selectItineraryWithFlightID(SQLiteDatabase db, int flightID) {
+        return db.query("ITINERARY", null, " ITINERARY.ITINERARY_FLIGHT = ? ",
+                new String[]{String.valueOf(flightID)}, null, null, null, null);
     }
+
+    public static Cursor login(SQLiteDatabase db, String email, String password) {
+        return db.query("ACCOUNT", new String[]{"_id", "EMAIL", "PASSWORD"}, "EMAIL = ? AND PASSWORD = ? ", new String[]{email, password}, null, null, null, null);
+    }
+
+    public static void deleteAccount(SQLiteDatabase db, String id) {
+        db.delete("ACCOUNT", "_id = ? ", new String[]{id});
+    }
+
+    public static void updateClientImage(SQLiteDatabase db, byte[] image, String id) {
+        ContentValues employeeValues = new ContentValues();
+        employeeValues.put("IMAGE", image);
+        db.update("CLIENT", employeeValues, " _id = ? ", new String[]{id});
+    }
+
+    public static void updatePassword(SQLiteDatabase db, String password, String id) {
+        ContentValues clientValues = new ContentValues();
+        clientValues.put("PASSWORD", password);
+        db.update("ACCOUNT", clientValues, " _id = ? ", new String[]{id});
+    }
+
+    public static Cursor getImageWithClientID(SQLiteDatabase db, int clientID) {
+        return db.query("CLIENT", new String[]{"IMAGE"}, "_id = ? ", new String[]{Integer.toString(clientID)}, null, null, null, null);
+    }
+
+    public static Cursor getClientFirstNameLastNameEmail(SQLiteDatabase db, int clientID) {
+        return db.query("CLIENT", new String[]{"FIRSTNAME", "LASTNAME", "EMAIL"}, "_id = ? ", new String[]{Integer.toString(clientID)}, null, null, null, null);
+    }
+
+    public static Cursor getClientPassword(SQLiteDatabase db, int clientID) {
+        return db.query("ACCOUNT", new String[]{"PASSWORD"}, "_id = ? ", new String[]{Integer.toString(clientID)}, null, null, null, null);
+    }
+    public static void updateClient(SQLiteDatabase db, String firstName, String lastName, String phone, String creditCard, int clientID) {
+        ContentValues clientValues = new ContentValues();
+        clientValues.put("FIRSTNAME", HelperUtilities.capitalize(firstName.toLowerCase()));
+        clientValues.put("LASTNAME", HelperUtilities.capitalize(lastName.toLowerCase()));
+        clientValues.put("PHONE", phone);
+        clientValues.put("CREDITCARD", creditCard);
+        db.update("CLIENT", clientValues, "_id = ?", new String[]{String.valueOf(clientID)});
+    }
+
+    public static void updateAccount(SQLiteDatabase db, String email, int clientID) {
+        ContentValues accountValues = new ContentValues();
+        accountValues.put("PHONE", email);
+        db.update("ACCOUNT", accountValues, " ACCOUNT_CLIENT = ?", new String[]{String.valueOf(clientID)});
+    }
+
 
 
 }

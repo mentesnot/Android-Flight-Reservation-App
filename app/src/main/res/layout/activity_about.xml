@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/primaryBlue"
+    android:padding="35dp"
     tools:context="com.techprax.comp3074_project13.AboutActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/txtAboutHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:layout_marginBottom="40dp"
+        android:textColor="@color/colorInverted"
+        android:fontFamily="sans-serif-thin"
+        android:text="EasyTravel App for Android"/>
+
+    <TextView
+        android:id="@+id/txtVersionHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorInverted"
+        android:text="Version"
+        android:fontFamily="sans-serif-thin"/>
+    <TextView
+        android:id="@+id/txtVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorInverted"
+        android:text="100.0.0.00.001" />
+
+</LinearLayout>

@@ -90,14 +90,14 @@ public class FlightDetailActivity extends AppCompatActivity {
                 origin.setText(cursor.getString(2));
                 destination.setText(cursor.getString(3));
                 departureDate.setText(cursor.getString(4));
-                departureTime.setText(cursor.getString(5));
-                arrivalTime.setText(cursor.getString(6));
-                flightDuration.setText(cursor.getString(7));
-                fare.setText(cursor.getString(8));
-                airline.setText(cursor.getString(9));
-                fare.setText("$" + cursor.getString(10));
-                totalFare.setText("$" + cursor.getString(10));
-                flightClass.setText(cursor.getString(11));
+                arrivalDate.setText(cursor.getString(5));
+                departureTime.setText(cursor.getString(6));
+                arrivalTime.setText(cursor.getString(7));
+                flightDuration.setText(cursor.getString(8));
+                fare.setText("$" + cursor.getString(9));
+                totalFare.setText("$" + cursor.getString(9));
+                airline.setText(cursor.getString(10));
+                flightClass.setText(cursor.getString(12));
             }
 
         } catch (SQLiteException ex) {

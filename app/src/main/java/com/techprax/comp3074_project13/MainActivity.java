@@ -319,6 +319,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
 
+            getApplicationContext().getSharedPreferences(LoginActivity.MY_PREFERENCES, 0).edit().clear().commit();
+            Intent intent = new Intent(getApplicationContext(), LaunchActivity.class);
+            startActivity(intent);
+            finish();
+
         }
 
 

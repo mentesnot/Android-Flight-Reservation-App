@@ -42,12 +42,12 @@ public class ItineraryActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_SHORT).show();
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),
-                        R.layout.custom_list_view,
+                        R.layout.custom_itinerary_view,
                         cursor,
-                        new String[]{"DEPARTURETIME", "ARRIVALTIME", "FARE", "AIRLINENAME",
-                                "FLIGHTDURATION", "FLIGHTCLASSNAME"},
-                        new int[]{R.id.txtDepartureTime, R.id.txtArrivalTime, R.id.txtFare,
-                                R.id.txtAirline, R.id.txtTravelTime, R.id.txtClass},
+                        new String[]{"ORIGIN", "DESTINATION", "AIRLINENAME",
+                                "FLIGHTDURATION", "FLIGHTCLASSNAME", "DEPARTUREDATE"},
+                        new int[]{R.id.txtOriginList, R.id.txtDestinationList,
+                                R.id.txtAirline, R.id.txtTravelTime, R.id.txtClass, R.id.txtDepartureDateList},
                         0);
 
                 flightList.setAdapter(listAdapter);
