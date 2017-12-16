@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        updateMyDatabase(db, 0, DB_VERSION);
+        updateDatabase(db, 0, DB_VERSION);
     }
 
     //requires API level 16 and above
@@ -43,11 +43,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + "ACCOUNT");
         db.execSQL("DROP TABLE IF EXISTS " + "ITINERARY");
 
-        updateMyDatabase(db, oldVersion, newVersion);
+        updateDatabase(db, oldVersion, newVersion);
 
     }
 
-    private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+    private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         if (oldVersion < 1) {
 
@@ -99,7 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             insertFlightClass(db, "Economy");
             insertFlightClass(db, "Business");
 
-            insertClient(db, "John", "Doe", "4164121000", "1232456598783241");
+            insertClient(db, "John", "Doe", "4164121000", "5412547854125963");
 
             insertAccount(db, "john@gmail.com", "password", 1);
 
@@ -288,7 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete("ITINERARY", " _id = ? ", new String[]{String.valueOf(itineraryID)});
     }
 
-    public static Cursor selectItineraryWithFlightID(SQLiteDatabase db, int flightID) {
+    public static Cursor selectItinerary(SQLiteDatabase db, int flightID) {
         return db.query("ITINERARY", null, " ITINERARY.ITINERARY_FLIGHT = ? ",
                 new String[]{String.valueOf(flightID)}, null, null, null, null);
     }
@@ -361,6 +361,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "ON CLIENT._id = ACCOUNT.ACCOUNT_CLIENT " +
                 "WHERE " +
                 "CLIENT._id = '" + clientID + "'", null);
+    }
+
+    public static Cursor selectClient(SQLiteDatabase db, int clientID){
+        return db.query("CLIENT", null," _id = ? ",
+                new String[]{String.valueOf(clientID)},null, null, null, null);
     }
 
 }

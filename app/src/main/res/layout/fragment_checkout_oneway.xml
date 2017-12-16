@@ -144,7 +144,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_alignParentEnd="true"
                             android:layout_alignBaseline="@+id/arrivalDate"
-                            android:text="2017/12/20" />
+                            android:text="2017/12/20"
+                            android:textSize="16sp"/>
 
                         <TextView
                             android:id="@+id/departureTime"
@@ -186,7 +187,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_alignParentEnd="true"
                             android:layout_alignBaseline="@+id/arrivalTime"
-                            android:text="2:10pm" />
+                            android:text="2:10pm"
+                            android:textSize="16sp"/>
 
                         <TextView
                             android:id="@+id/duration"

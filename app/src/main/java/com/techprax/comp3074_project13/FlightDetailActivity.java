@@ -111,7 +111,7 @@ public class FlightDetailActivity extends AppCompatActivity {
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getWritableDatabase();
 
-            cursor = DatabaseHelper.selectItineraryWithFlightID(db, flightID);
+            cursor = DatabaseHelper.selectItinerary(db, flightID);
 
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -150,6 +150,8 @@ public class FlightDetailActivity extends AppCompatActivity {
 
         return builder.create();
     }
+
+
 
 
 }

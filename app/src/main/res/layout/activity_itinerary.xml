@@ -4,18 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/itineraryContainer"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="15dp"
     android:background="@color/colorLightGray"
     tools:context="com.techprax.comp3074_project13.ItineraryActivity">
 
 
-            <ListView
+
+    <ListView
                 android:id="@+id/itinerary"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:divider="@color/colorLightGray"
                 android:dividerHeight="10dp"/>
 
+    <TextView
+        android:id="@+id/itineraryMessage"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/bgrounded"
+        android:padding="15dp"
+        android:textSize="18sp"
+        android:text="You have no booked flights at this time." />
 
 </LinearLayout>

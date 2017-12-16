@@ -127,7 +127,8 @@
         </activity>
         <activity android:name=".EditProfileActivity"
             android:label="Edit Profile"
-            android:parentActivityName=".ProfileActivity">
+            android:parentActivityName=".ProfileActivity"
+            android:windowSoftInputMode="stateHidden">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

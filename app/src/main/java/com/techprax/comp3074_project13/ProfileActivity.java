@@ -103,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String email = cursor.getString(4);
 
                 Client client = new Client(fName, lName, phone, creditCard);
-               Account account = new Account(email);
+                Account account = new Account(email);
 
                 clientFirstname.setText("First Name: " + client.getFirstName());
                 clientLastName.setText("Last Name: " + client.getLastName());

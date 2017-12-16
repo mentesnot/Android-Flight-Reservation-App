@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,6 +99,9 @@ public class MainActivity extends AppCompatActivity
     private int tempOneWaySelectedClassID = 0;
     private int tempRoundSelectedClassID = 0;
     private String oneWayDepartureDate, roundDepartureDate, roundReturnDate;
+    private View header;
+    private ImageView imgProfile;
+    private int clientID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +119,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        header = navigationView.getHeaderView(0);
+
+        clientID = clientID();
 
         //tab host manager
         final TabHost tabHost = (TabHost) findViewById(R.id.tabhost);
@@ -165,11 +174,15 @@ public class MainActivity extends AppCompatActivity
         btnRoundNumTraveller = (Button) findViewById(R.id.btnRoundTraveller);
 
         btnSearch = (Button) findViewById(R.id.btnSearch);
+        imgProfile = (ImageView) header.findViewById(R.id.imgProfile);
 
 
         year = HelperUtilities.currentYear();
         month = HelperUtilities.currentMonth();
         day = HelperUtilities.currentDay();
+
+        drawerProfileInfo();
+        loadImage(clientID);
 
 
         //date picker listeners
@@ -255,10 +268,16 @@ public class MainActivity extends AppCompatActivity
                 //call search method here
 
                 if (currentTab == 0) {
-                    searchOneWayFlight();
+
+                    if(isValidOneWayInput()){
+                        searchOneWayFlight();
+                    }
 
                 } else if (currentTab == 1) {
-                    searchRoundFlight();
+
+                    if(isValidRoundInput()){
+                        searchRoundFlight();
+                    }
                 }
             }
         });
@@ -587,8 +606,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("CURRENT_TAB", currentTab);
-        editor.putString("ORIGIN", txtOneWayFrom.getText().toString());
-        editor.putString("DESTINATION", txtOneWayTo.getText().toString());
+        editor.putString("ORIGIN", txtOneWayFrom.getText().toString().trim());
+        editor.putString("DESTINATION", txtOneWayTo.getText().toString().trim());
         editor.putString("DEPARTURE_DATE", oneWayDepartureDate);
         editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
 
@@ -608,8 +627,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("CURRENT_TAB", currentTab);
-        editor.putString("ORIGIN", txtRoundFrom.getText().toString());
-        editor.putString("DESTINATION", txtRoundTo.getText().toString());
+        editor.putString("ORIGIN", txtRoundFrom.getText().toString().trim());
+        editor.putString("DESTINATION", txtRoundTo.getText().toString().trim());
         editor.putString("DEPARTURE_DATE", roundDepartureDate);
         editor.putString("RETURN_DATE", roundReturnDate);
         editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
@@ -618,6 +637,118 @@ public class MainActivity extends AppCompatActivity
         editor.commit();
 
         startActivity(intent);
+    }
+
+    public void drawerProfileInfo() {
+        try {
+
+            TextView profileName = (TextView) header.findViewById(R.id.profileName);
+            TextView profileEmail = (TextView) header.findViewById(R.id.profileEmail);
+
+
+            databaseHelper = new DatabaseHelper(getApplicationContext());
+            db = databaseHelper.getReadableDatabase();
+
+            cursor = DatabaseHelper.selectClientJoinAccount(db, clientID);
+
+
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                String fName = cursor.getString(0);
+                String lName = cursor.getString(1);
+                String email = cursor.getString(4);
+
+                String fullName = fName + " " + lName;
+
+                profileName.setText(fullName);
+                profileEmail.setText(email);
+
+            }
+
+
+        } catch (SQLiteException ex) {
+            Toast.makeText(getApplicationContext(), "Database unavailable", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //loads image on create
+    public void loadImage(int clientID) {
+        try {
+            databaseHelper = new DatabaseHelper(getApplicationContext());
+            db = databaseHelper.getReadableDatabase();
+
+
+            cursor = DatabaseHelper.selectImage(db, clientID);
+
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                // Create a bitmap from the byte array
+                if (cursor.getBlob(0) != null) {
+                    byte[] image = cursor.getBlob(0);
+
+                    imgProfile.setImageBitmap(HelperUtilities.decodeSampledBitmapFromByteArray(image, 300, 300));
+
+                }
+
+            }
+
+
+        } catch (SQLiteException ex) {
+            Toast.makeText(getApplicationContext(), "Database unavailable", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public int clientID() {
+        LoginActivity.sharedPreferences = getSharedPreferences(LoginActivity.MY_PREFERENCES, Context.MODE_PRIVATE);
+        clientID = LoginActivity.sharedPreferences.getInt(LoginActivity.CLIENT_ID, 0);
+        return clientID;
+    }
+
+
+    //validates user input
+    public boolean isValidOneWayInput() {
+        if (HelperUtilities.isEmptyOrNull(txtOneWayFrom.getText().toString())) {
+            txtOneWayFrom.setError("Please enter the origin");
+            return false;
+        } else if (!HelperUtilities.isString(txtOneWayFrom.getText().toString())) {
+            txtOneWayFrom.setError("Please enter a valid origin");
+            return false;
+        }
+
+        if (HelperUtilities.isEmptyOrNull(txtOneWayTo.getText().toString())) {
+            txtOneWayTo.setError("Please enter the destination");
+            return false;
+        } else if (!HelperUtilities.isString(txtOneWayTo.getText().toString())) {
+            txtOneWayTo.setError("Please enter a valid destination");
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    //validates user input
+    public boolean isValidRoundInput() {
+        if (HelperUtilities.isEmptyOrNull(txtRoundFrom.getText().toString())) {
+            txtRoundFrom.setError("Please enter the origin");
+            return false;
+        } else if (!HelperUtilities.isString(txtRoundFrom.getText().toString())) {
+            txtRoundFrom.setError("Please enter a valid origin");
+            return false;
+        }
+
+        if (HelperUtilities.isEmptyOrNull(txtRoundTo.getText().toString())) {
+            txtRoundTo.setError("Please enter the destination");
+            return false;
+        } else if (!HelperUtilities.isString(txtRoundTo.getText().toString())) {
+            txtRoundTo.setError("Please enter a valid destination");
+            return false;
+        }
+        return true;
+
     }
 
 
