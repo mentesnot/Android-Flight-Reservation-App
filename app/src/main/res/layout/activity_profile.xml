@@ -95,7 +95,13 @@
                     android:layout_marginBottom="16dp"
                     android:text="Email: john.doe@gmail.com"/>
                 <TextView
-                    android:id="@+id/txtCreditCard"
+                    android:id="@+id/txtClientPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="Email: 4162354874"/>
+                <TextView
+                    android:id="@+id/txtClinetCreditCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"

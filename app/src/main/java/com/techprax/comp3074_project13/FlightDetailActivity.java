@@ -82,7 +82,7 @@ public class FlightDetailActivity extends AppCompatActivity {
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getReadableDatabase();
 
-            cursor = DatabaseHelper.selectFlightWithID(db, id);
+            cursor = DatabaseHelper.selectFlight(db, id);
 
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();

@@ -8,13 +8,7 @@ public class Client {
     private String clientID;
     private String firstName;
     private String lastName;
-    private String address;
-    private String postalCode;
-    private String city;
-    private String province;
-    private String country;
     private String phone;
-    private String email;
     private String creditCard;
     private Bitmap image;
 
@@ -22,10 +16,11 @@ public class Client {
 
     }
 
-    public Client(String firstName, String lastName, String email) {
+    public Client(String firstName, String lastName, String phone, String creditCard) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.phone = phone;
+        this.creditCard = creditCard;
     }
 
     public String getClientID() {
@@ -52,46 +47,6 @@ public class Client {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -100,12 +55,12 @@ public class Client {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCreditCard() {
+        return creditCard;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCreditCard(String creditCard) {
+        this.creditCard = creditCard;
     }
 
     public Bitmap getImage() {
@@ -116,11 +71,5 @@ public class Client {
         this.image = image;
     }
 
-    public String getCreditCard() {
-        return creditCard;
-    }
 
-    public void setCreditCard(String creditCard) {
-        this.creditCard = creditCard;
-    }
 }

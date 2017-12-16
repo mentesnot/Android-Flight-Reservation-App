@@ -92,7 +92,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/primaryBlue"
             android:textColor="@color/colorInverted"
-            android:text="Submit"
+            android:text="Save"
             android:textSize="18sp"
             android:textAllCaps="false"
             android:fontFamily="sans-serif"/>

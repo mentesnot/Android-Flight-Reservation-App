@@ -84,7 +84,7 @@ public class CheckoutRoundFragment extends Fragment {
         outboundFlightID = sharedPreferences.getInt("OUTBOUND_FLIGHT_ID", 0);
         returnFlightID = sharedPreferences.getInt("RETURN_FLIGHT_ID", 0);
 
-        clientID = 1;
+        clientID = clientID();
 
         airline = (TextView) view.findViewById(R.id.txtCheckoutAirlineOutbound);
         flightNo = (TextView) view.findViewById(R.id.txtCheckoutFlightNumberOutbound);
@@ -141,7 +141,7 @@ public class CheckoutRoundFragment extends Fragment {
             databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
             db = databaseHelper.getReadableDatabase();
 
-            cursor = DatabaseHelper.selectFlightWithID(db, id);
+            cursor = DatabaseHelper.selectFlight(db, id);
 
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
@@ -169,7 +169,7 @@ public class CheckoutRoundFragment extends Fragment {
             databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
             db = databaseHelper.getReadableDatabase();
 
-            cursor = DatabaseHelper.selectFlightWithID(db, id);
+            cursor = DatabaseHelper.selectFlight(db, id);
 
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
@@ -219,6 +219,12 @@ public class CheckoutRoundFragment extends Fragment {
                 });
 
         return builder.create();
+    }
+
+    public int clientID() {
+        LoginActivity.sharedPreferences = getActivity().getSharedPreferences(LoginActivity.MY_PREFERENCES, Context.MODE_PRIVATE);
+        clientID = LoginActivity.sharedPreferences.getInt(LoginActivity.CLIENT_ID, 0);
+        return clientID;
     }
 
 }

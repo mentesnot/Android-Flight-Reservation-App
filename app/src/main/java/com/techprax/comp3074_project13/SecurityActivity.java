@@ -125,7 +125,7 @@ public class SecurityActivity extends AppCompatActivity {
             hospitalDatabaseHelper = new DatabaseHelper(getApplicationContext());
             db = hospitalDatabaseHelper.getReadableDatabase();
 
-            cursor = DatabaseHelper.getClientPassword(db, clientID);
+            cursor = DatabaseHelper.selectClientPassword(db, clientID);
 
 
             if (cursor.moveToFirst()) {

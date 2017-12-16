@@ -116,7 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String createFlight() {
         return "CREATE TABLE FLIGHT (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "FLIGHTNUMBER INTEGER IDENTITY (1000, 1), " +
+                "FLIGHTNUMBER INTEGER, " +
                 "ORIGIN TEXT, " +
                 "DESTINATION TEXT, " +
                 "DEPARTUREDATE TEXT, " +
@@ -132,10 +132,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String createSeat() {
         return "CREATE TABLE SEAT (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "SEATNUMBER INTEGER IDENTITY (100, 1), " +
-                "SEAT_FLIGHT TEXT, " +
+                "SEATNUMBER INTEGER, " +
+                "SEAT_FLIGHT INTEGER, " +
                 "STATUS TEXT, " +
-                "SEAT_FLIGHTCLASS TEXT, " +
+                "SEAT_FLIGHTCLASS INTEGER, " +
                 "FOREIGN KEY(SEAT_FLIGHT) REFERENCES FLIGHT(_id)," +
                 "FOREIGN KEY(SEAT_FLIGHTCLASS) REFERENCES FLIGHTCLASS(_id));";
     }
@@ -209,16 +209,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("FLIGHTCLASS", null, flightClassValues);
     }
 
-    public void insertClient(SQLiteDatabase db, String firstName, String lastName, String phone, String creditCard) {
+    public static void insertClient(SQLiteDatabase db, String firstName, String lastName, String phone, String creditCard) {
         ContentValues clientValues = new ContentValues();
-        clientValues.put("FIRSTNAME", firstName);
-        clientValues.put("LASTNAME", lastName);
+        clientValues.put("FIRSTNAME", HelperUtilities.capitalize(firstName.toLowerCase()));
+        clientValues.put("LASTNAME", HelperUtilities.capitalize(lastName.toLowerCase()));
         clientValues.put("PHONE", phone);
         clientValues.put("CREDITCARD", creditCard);
         db.insert("CLIENT", null, clientValues);
     }
 
-    public void insertAccount(SQLiteDatabase db, String email, String password, int clientID) {
+    public static void insertAccount(SQLiteDatabase db, String email, String password, int clientID) {
         ContentValues accountValues = new ContentValues();
         accountValues.put("EMAIL", email);
         accountValues.put("PASSWORD", password);
@@ -233,7 +233,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("ITINERARY", null, itineraryValues);
     }
 
-    public static Cursor selectFlightWithID(SQLiteDatabase db, int flightID) {
+    public static Cursor selectFlight(SQLiteDatabase db, int flightID) {
         return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, ARRIVALDATE, DEPARTURETIME, " +
                 " ARRIVALTIME, FLIGHTDURATION, FARE, AIRLINENAME, SEATNUMBER, FLIGHTCLASSNAME " +
                 "FROM FLIGHT " +
@@ -294,7 +294,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static Cursor login(SQLiteDatabase db, String email, String password) {
-        return db.query("ACCOUNT", new String[]{"_id", "EMAIL", "PASSWORD"}, "EMAIL = ? AND PASSWORD = ? ", new String[]{email, password}, null, null, null, null);
+        return db.query("ACCOUNT", new String[]{"_id", "EMAIL", "PASSWORD", "ACCOUNT_CLIENT"},
+                "EMAIL = ? AND PASSWORD = ? ", new String[]{email, password},
+                null, null, null, null);
     }
 
     public static void deleteAccount(SQLiteDatabase db, String id) {
@@ -313,18 +315,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update("ACCOUNT", clientValues, " _id = ? ", new String[]{id});
     }
 
-    public static Cursor getImageWithClientID(SQLiteDatabase db, int clientID) {
-        return db.query("CLIENT", new String[]{"IMAGE"}, "_id = ? ", new String[]{Integer.toString(clientID)}, null, null, null, null);
+    public static Cursor selectImage(SQLiteDatabase db, int clientID) {
+        return db.query("CLIENT", new String[]{"IMAGE"}, "_id = ? ",
+                new String[]{Integer.toString(clientID)}, null, null,
+                null, null);
     }
 
-    public static Cursor getClientFirstNameLastNameEmail(SQLiteDatabase db, int clientID) {
-        return db.query("CLIENT", new String[]{"FIRSTNAME", "LASTNAME", "EMAIL"}, "_id = ? ", new String[]{Integer.toString(clientID)}, null, null, null, null);
+
+    public static Cursor selectClientPassword(SQLiteDatabase db, int clientID) {
+        return db.query("ACCOUNT", new String[]{"PASSWORD"}, "_id = ? ",
+                new String[]{Integer.toString(clientID)}, null, null,
+                null, null);
     }
 
-    public static Cursor getClientPassword(SQLiteDatabase db, int clientID) {
-        return db.query("ACCOUNT", new String[]{"PASSWORD"}, "_id = ? ", new String[]{Integer.toString(clientID)}, null, null, null, null);
-    }
-    public static void updateClient(SQLiteDatabase db, String firstName, String lastName, String phone, String creditCard, int clientID) {
+    public static void updateClient(SQLiteDatabase db, String firstName, String lastName,
+                                    String phone, String creditCard, int clientID) {
         ContentValues clientValues = new ContentValues();
         clientValues.put("FIRSTNAME", HelperUtilities.capitalize(firstName.toLowerCase()));
         clientValues.put("LASTNAME", HelperUtilities.capitalize(lastName.toLowerCase()));
@@ -335,10 +340,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static void updateAccount(SQLiteDatabase db, String email, int clientID) {
         ContentValues accountValues = new ContentValues();
-        accountValues.put("PHONE", email);
+        accountValues.put("EMAIL", email);
         db.update("ACCOUNT", accountValues, " ACCOUNT_CLIENT = ?", new String[]{String.valueOf(clientID)});
     }
 
+    public static Cursor selectClientID(SQLiteDatabase db, String firstName, String lastName,
+                                        String phone, String creditCard) {
+        return db.query("CLIENT", new String[]{"_id"},
+                "FIRSTNAME = ? AND LASTNAME = ? AND PHONE = ? AND CREDITCARD = ? ",
+                new String[]{firstName, lastName, phone, creditCard},
+                null, null, null, null);
+    }
 
+    public static Cursor selectClientJoinAccount(SQLiteDatabase db, int clientID) {
+        return db.rawQuery("SELECT FIRSTNAME, LASTNAME, PHONE, CREDITCARD, EMAIL FROM CLIENT " +
+                "JOIN ACCOUNT " +
+                "ON CLIENT._id = ACCOUNT.ACCOUNT_CLIENT " +
+                "WHERE " +
+                "CLIENT._id = '" + clientID + "'", null);
+    }
 
 }

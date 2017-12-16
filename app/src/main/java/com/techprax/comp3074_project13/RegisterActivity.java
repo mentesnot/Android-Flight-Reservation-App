@@ -22,12 +22,15 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText inputFirstName;
     private EditText inputLastName;
     private EditText inputEmail;
+    private EditText inputCreditCard;
+    private EditText inputPhone;
     private EditText inputConfirmPassword;
     private EditText inputPassword;
     private boolean isValid;
     private SQLiteOpenHelper hospitalDatabaseHelper;
     private SQLiteDatabase db;
     private Cursor cursor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
         inputFirstName = (EditText) findViewById(R.id.txtFirstName);
         inputLastName = (EditText) findViewById(R.id.txtLastName);
         inputEmail = (EditText) findViewById(R.id.txtEmail);
+        inputPhone = (EditText) findViewById(R.id.txtPhone);
+        inputCreditCard = (EditText) findViewById(R.id.txtCreditCard);
         inputPassword = (EditText) findViewById(R.id.txtPassword);
         inputConfirmPassword = (EditText) findViewById(R.id.txtConfirmPassword);
 
@@ -70,23 +75,34 @@ public class RegisterActivity extends AppCompatActivity {
         try {
 
 
-            /*hospitalDatabaseHelper = new DatabaseHelper(getApplicationContext());
+            hospitalDatabaseHelper = new DatabaseHelper(getApplicationContext());
             db = hospitalDatabaseHelper.getWritableDatabase();
 
             isValid = isValidUserInput();
             if (isValid) {
-                DatabaseHelper.insertEmployee(db,
+                DatabaseHelper.insertClient(db,
                         inputFirstName.getText().toString(),
                         inputLastName.getText().toString(),
-                        inputEmail.getText().toString(),
-                        inputConfirmPassword.getText().toString(),
-                        inputPassword.getText().toString(),
-                        clientID,
-                        jobPositionID);
+                        inputPhone.getText().toString(),
+                        inputCreditCard.getText().toString());
 
-                registrationSuccessDialog().show();
+                cursor = DatabaseHelper.selectClientID(db,
+                        inputFirstName.getText().toString(),
+                        inputLastName.getText().toString(),
+                        inputPhone.getText().toString(),
+                        inputCreditCard.getText().toString());
+
+                if(cursor != null && cursor.getCount() == 1) {
+                    cursor.moveToFirst();
+
+                    DatabaseHelper.insertAccount(db,
+                            inputEmail.getText().toString(),
+                            inputPassword.getText().toString(),
+                            cursor.getInt(0));
+
+                    registrationSuccessDialog().show();
+                }
             }
-*/
 
         } catch (SQLiteException ex) {
             Toast.makeText(getApplicationContext(), "Database unavailable", Toast.LENGTH_SHORT).show();
@@ -138,11 +154,21 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
-        if (HelperUtilities.isEmptyOrNull(inputConfirmPassword.getText().toString())) {
-            inputConfirmPassword.setError("Please enter your username");
+        if (HelperUtilities.isEmptyOrNull(inputPhone.getText().toString())) {
+            inputPhone.setError("Please enter your phone");
+            return false;
+        } else if (!HelperUtilities.isValidPhone(inputPhone.getText().toString())) {
+            inputPhone.setError("Please enter a valid phone");
             return false;
         }
 
+        if (HelperUtilities.isEmptyOrNull(inputCreditCard.getText().toString())) {
+            inputCreditCard.setError("Please enter your credit card number");
+            return false;
+        } else if (!HelperUtilities.isValidCreditCard(inputCreditCard.getText().toString())) {
+            inputCreditCard.setError("Please enter a valid credit card number");
+            return false;
+        }
         if (HelperUtilities.isEmptyOrNull(inputPassword.getText().toString())) {
             inputPassword.setError("Please enter your password");
             return false;
@@ -150,6 +176,18 @@ public class RegisterActivity extends AppCompatActivity {
             inputPassword.setError("Your password must have at least 6 characters.");
             return false;
         }
+
+        if (HelperUtilities.isEmptyOrNull(inputConfirmPassword.getText().toString())) {
+            inputConfirmPassword.setError("Please confirm password");
+            return false;
+        }
+
+        if(!(inputConfirmPassword.getText().toString().equals(inputPassword.getText().toString()))){
+
+            inputConfirmPassword.setError("The password doesn't match.");
+            return false;
+        }
+
 
         return true;
 

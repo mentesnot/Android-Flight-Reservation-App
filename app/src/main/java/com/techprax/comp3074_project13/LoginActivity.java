@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
 
     public static final String MY_PREFERENCES = "MY_PREFS";
-    public static final String PASSWORD = "PASSWORD_KEY";
+    public static final String EMAIL = "EMAIL";
     public static final String CLIENT_ID = "CLIENT_ID";
     public static final String LOGIN_STATUS = "LOGGED_IN";
     public static SharedPreferences sharedPreferences;
@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private SQLiteOpenHelper databaseHelper;
     private SQLiteDatabase db;
     private Cursor cursor;
+    private int accountID;
     private int clientID;
 
     @Override
@@ -82,25 +83,26 @@ public class LoginActivity extends AppCompatActivity {
 
             //filters the user input
 
-            String filteredUsername = HelperUtilities.filter(inputEmail.getText().toString());
+            String filteredEmail = HelperUtilities.filter(inputEmail.getText().toString());
             String filteredPassword = HelperUtilities.filter(inputPassword.getText().toString());
 
             if (isValid) {
 
-                cursor = DatabaseHelper.login(db, filteredUsername, filteredPassword);
+                cursor = DatabaseHelper.login(db, filteredEmail, filteredPassword);
 
                 if (cursor != null && cursor.getCount() == 1) {
                     cursor.moveToFirst();
 
-                    clientID = cursor.getInt(0);
                     String email = cursor.getString(1);
-                    String password = cursor.getString(2);
+                    clientID = cursor.getInt(3);
+
+                    Toast.makeText(getApplicationContext(), "client id " + String.valueOf(clientID), Toast.LENGTH_SHORT).show();
 
                     sharedPreferences = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     editor.putInt(CLIENT_ID, clientID);
-                    editor.putString(PASSWORD, password);
+                    editor.putString(EMAIL, email);
                     editor.putBoolean(LOGIN_STATUS, true);
 
                     editor.commit();

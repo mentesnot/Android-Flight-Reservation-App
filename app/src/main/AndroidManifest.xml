@@ -70,11 +70,11 @@
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".CheckOutActivity"
             android:label="Checkout"
@@ -115,9 +115,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.techprax.comp3074_project13.MainActivity" />
         </activity>
-        <activity android:name=".FlightDetailActivity"
+        <activity
+            android:name=".FlightDetailActivity"
             android:label="Flight Detail"
             android:parentActivityName=".ItineraryActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.techprax.comp3074_project13.MainActivity" />
+        </activity>
+        <activity android:name=".EditProfileActivity"
+            android:label="Edit Profile"
+            android:parentActivityName=".ProfileActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

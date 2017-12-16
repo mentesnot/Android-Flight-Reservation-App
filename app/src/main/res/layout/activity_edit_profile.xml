@@ -5,26 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.techprax.comp3074_project13.RegisterActivity">
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        app:srcCompat="@drawable/logo" />
+    tools:context="com.techprax.comp3074_project13.EditProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ScrollView
-            android:id="@+id/register_form"
+            android:id="@+id/edit_client_form"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/btnRegister">
+            android:layout_height="match_parent">
             <LinearLayout
-                android:id="@+id/employee_registration_form"
+                android:id="@+id/client_edit_form"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="15dp"
@@ -73,16 +64,18 @@
                         android:singleLine="true" />
 
                 </android.support.design.widget.TextInputLayout>
+
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/txtPhone"
+                        android:id="@+id/txtPhoneEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_phone"
-                        android:inputType="textEmailAddress"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true" />
 
@@ -93,7 +86,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/txtCreditCard"
+                        android:id="@+id/txtCreditCardEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_credit_card"
@@ -104,45 +97,6 @@
                 </android.support.design.widget.TextInputLayout>
 
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/txtPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/txtConfirmPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_confirm_password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </android.support.design.widget.TextInputLayout>
-
-
-                <TextView
-                    android:id="@+id/linkLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Already have an account? Login"
-                    android:gravity="center"
-                    android:layout_marginTop="30dp"/>
-
             </LinearLayout>
 
 
@@ -150,21 +104,19 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/primaryBlue"
             android:textColor="@color/colorInverted"
-            android:text="Register"
+            android:text="Save"
             android:textSize="18sp"
             android:textAllCaps="false"
             android:fontFamily="sans-serif"/>
 
 
     </RelativeLayout>
-
-
 
 
 </LinearLayout>
