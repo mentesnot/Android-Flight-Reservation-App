@@ -84,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
             clientLastName = (TextView) findViewById(R.id.txtClientLastName);
             clientEmail = (TextView) findViewById(R.id.txtClientEmail);
             clientPhone = (TextView) findViewById(R.id.txtClientPhone);
-            clientCreditCard = (TextView) findViewById(R.id.txtClinetCreditCard);
+            clientCreditCard = (TextView) findViewById(R.id.txtClientCreditCard);
             fullName = (TextView) findViewById(R.id.txtFullName);
 
 

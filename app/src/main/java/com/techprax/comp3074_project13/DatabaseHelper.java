@@ -299,8 +299,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, null, null, null);
     }
 
-    public static void deleteAccount(SQLiteDatabase db, String id) {
-        db.delete("ACCOUNT", "_id = ? ", new String[]{id});
+    public static void deleteAccount(SQLiteDatabase db, String clientID) {
+        db.delete("CLIENT", "_id = ? ", new String[]{clientID});
+        db.delete("ACCOUNT", "_id = ? ", new String[]{clientID});
+        db.delete("ITINERARY", "_id = ? ", new String[]{clientID});
     }
 
     public static void updateClientImage(SQLiteDatabase db, byte[] image, String id) {
@@ -341,7 +343,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static void updateAccount(SQLiteDatabase db, String email, int clientID) {
         ContentValues accountValues = new ContentValues();
         accountValues.put("EMAIL", email);
-        db.update("ACCOUNT", accountValues, " ACCOUNT_CLIENT = ?", new String[]{String.valueOf(clientID)});
+        db.update("ACCOUNT", accountValues, " ACCOUNT_CLIENT = ?",
+                new String[]{String.valueOf(clientID)});
     }
 
     public static Cursor selectClientID(SQLiteDatabase db, String firstName, String lastName,

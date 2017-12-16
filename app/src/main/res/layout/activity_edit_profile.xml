@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/txtFirstName"
+                        android:id="@+id/txtFirstNameEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_first_name"
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/txtLastName"
+                        android:id="@+id/txtLastNameEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_last_name"
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/txtEmail"
+                        android:id="@+id/txtEmailEdit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_email"
@@ -104,7 +104,7 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/btnEditProfile"
+            android:id="@+id/btnSaveProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
