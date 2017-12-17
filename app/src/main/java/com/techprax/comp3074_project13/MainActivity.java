@@ -29,6 +29,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,10 +51,9 @@ public class MainActivity extends AppCompatActivity
             roundReturnDatePickerListener;
 
     //date picker dialog
-    private DatePickerDialog datePickerDialog;
-    private int datePickerOneCallCnt = 0;
-    private int datePickerTwoCallCnt = 0;
-    private int datePickerThreeCallCnt = 0;
+    private DatePickerDialog datePickerDialog1;
+    private DatePickerDialog datePickerDialog2;
+    private DatePickerDialog datePickerDialog3;
 
     //current date
     private int year;
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity
     private View header;
     private ImageView imgProfile;
     private int clientID;
+    private int tempYear;
+    private int tempMonth;
+    private int tempDay;
+
+    private boolean isValidOneWayDate = true;
+    private boolean isValidRoundDate = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,12 +192,6 @@ public class MainActivity extends AppCompatActivity
         loadImage(clientID);
 
 
-        //date picker listeners
-        oneWayDepartureDatePickerListener = getOneWayDepartureDatePickerListener();
-        roundDepartureDatePickerListener = getRoundDepartureDatePickerListener();
-        roundReturnDatePickerListener = getRoundReturnDatePickerListener();
-
-
         //one way departure date picker on click listener
         btnOneWayDepartureDatePicker.setOnClickListener(new View.OnClickListener() {
 
@@ -198,7 +199,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 datePickerDialog(ONE_WAY_DEPARTURE_DATE_PICKER).show();
-                datePickerOneCallCnt++;
 
             }
         });
@@ -210,7 +210,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 datePickerDialog(ROUND_DEPARTURE_DATE_PICKER).show();
-                datePickerTwoCallCnt++;
             }
         });
 
@@ -221,7 +220,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 datePickerDialog(ROUND_RETURN_DATE_PICKER).show();
-                datePickerThreeCallCnt++;
             }
         });
 
@@ -269,13 +267,13 @@ public class MainActivity extends AppCompatActivity
 
                 if (currentTab == 0) {
 
-                    if(isValidOneWayInput()){
+                    if (isValidOneWayInput() && isValidOneWayDate) {
                         searchOneWayFlight();
                     }
 
                 } else if (currentTab == 1) {
 
-                    if(isValidRoundInput()){
+                    if (isValidRoundInput() && isValidRoundDate) {
                         searchRoundFlight();
                     }
                 }
@@ -534,27 +532,28 @@ public class MainActivity extends AppCompatActivity
 
         switch (datePickerId) {
             case ONE_WAY_DEPARTURE_DATE_PICKER:
-                if (datePickerOneCallCnt == 0) {
-                    datePickerDialog = new DatePickerDialog(this, oneWayDepartureDatePickerListener, year, month, day);
+
+                if (datePickerDialog1 == null) {
+                    datePickerDialog1 = new DatePickerDialog(this, getOneWayDepartureDatePickerListener(), year, month, day);
                 }
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                return datePickerDialog;
+                datePickerDialog1.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                return datePickerDialog1;
 
             case ROUND_DEPARTURE_DATE_PICKER:
 
-                if (datePickerTwoCallCnt == 0) {
-                    datePickerDialog = new DatePickerDialog(this, roundDepartureDatePickerListener, year, month, day);
+                if (datePickerDialog2 == null) {
+                    datePickerDialog2 = new DatePickerDialog(this, getRoundDepartureDatePickerListener(), year, month, day);
                 }
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                return datePickerDialog;
+                datePickerDialog2.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                return datePickerDialog2;
 
             case ROUND_RETURN_DATE_PICKER:
 
-                if (datePickerThreeCallCnt == 0) {
-                    datePickerDialog = new DatePickerDialog(this, roundReturnDatePickerListener, year, month, day);
+                if (datePickerDialog3 == null) {
+                    datePickerDialog3 = new DatePickerDialog(this, getRoundReturnDatePickerListener(), year, month, day);
                 }
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                return datePickerDialog;
+                datePickerDialog3.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                return datePickerDialog3;
         }
         return null;
     }
@@ -563,6 +562,7 @@ public class MainActivity extends AppCompatActivity
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
+
                 //get one way departure date here
 
                 oneWayDepartureDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
@@ -576,6 +576,11 @@ public class MainActivity extends AppCompatActivity
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
+
+                tempYear = startYear;
+                tempMonth = startMonth;
+                tempDay = startDay;
+
                 //get round trip departure date here
                 roundDepartureDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
                 btnRoundDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
@@ -587,11 +592,35 @@ public class MainActivity extends AppCompatActivity
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
-                //get round trip return date here
-                roundReturnDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
-                btnRoundReturnDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
+
+                if (startYear < tempYear || startMonth < tempMonth || startDay < tempDay) {
+                    datePickerAlert().show();
+                    isValidRoundDate = false;
+
+                } else {
+                    isValidRoundDate = true;
+                    //get round trip return date here
+                    roundReturnDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
+                    btnRoundReturnDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
+                }
+
+
             }
         };
+    }
+
+    public Dialog datePickerAlert() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Please select a valid return date. The return date cannot be before the departure date.")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        return builder.create();
     }
 
     public void searchOneWayFlight() {
