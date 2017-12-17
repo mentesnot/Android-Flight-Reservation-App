@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -612,6 +613,7 @@ public class MainActivity extends AppCompatActivity
     public Dialog datePickerAlert() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setMessage("Please select a valid return date. The return date cannot be before the departure date.")
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -622,6 +624,30 @@ public class MainActivity extends AppCompatActivity
 
         return builder.create();
     }
+
+    public Dialog datePickerOneAlert() {
+
+        return new AlertDialog.Builder(this).setMessage("Please select a departure date.")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                }).create();
+
+    }
+
+    public Dialog datePickerTwoAlert() {
+        return new AlertDialog.Builder(this).setMessage("Please select a return date.")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                }).create();
+
+    }
+
 
     public void searchOneWayFlight() {
 
@@ -717,7 +743,6 @@ public class MainActivity extends AppCompatActivity
                     byte[] image = cursor.getBlob(0);
 
                     imgProfile.setImageBitmap(HelperUtilities.decodeSampledBitmapFromByteArray(image, 300, 300));
-
                 }
 
             }
@@ -754,6 +779,10 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
 
+        if (btnOneWayDepartureDatePicker.getText().toString().equalsIgnoreCase("departure date")) {
+            datePickerOneAlert().show();
+            return false;
+        }
         return true;
 
     }
@@ -774,6 +803,16 @@ public class MainActivity extends AppCompatActivity
             return false;
         } else if (!HelperUtilities.isString(txtRoundTo.getText().toString())) {
             txtRoundTo.setError("Please enter a valid destination");
+            return false;
+        }
+
+        if (btnRoundDepartureDatePicker.getText().toString().equalsIgnoreCase("departure date")) {
+            datePickerOneAlert().show();
+            return false;
+        }
+
+        if (btnRoundReturnDatePicker.getText().toString().equalsIgnoreCase("return date")) {
+            datePickerTwoAlert().show();
             return false;
         }
         return true;
