@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -67,6 +68,8 @@ public class CheckoutRoundFragment extends Fragment {
 
     private Button bookFlight;
     private int clientID;
+    private boolean flightExists = false;
+    private View view;
 
 
     public CheckoutRoundFragment() {
@@ -78,7 +81,7 @@ public class CheckoutRoundFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_checkout_round, container, false);
+        view = inflater.inflate(R.layout.fragment_checkout_round, container, false);
 
         sharedPreferences = getActivity().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         outboundFlightID = sharedPreferences.getInt("OUTBOUND_FLIGHT_ID", 0);
@@ -117,10 +120,11 @@ public class CheckoutRoundFragment extends Fragment {
             public void onClick(View view) {
 
                 bookFlight(clientID);
-                intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
 
-
+                if(flightExists == false){
+                    intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         // Inflate the layout for this fragment
@@ -195,10 +199,36 @@ public class CheckoutRoundFragment extends Fragment {
 
             databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
             db = databaseHelper.getWritableDatabase();
+			
+			cursor = DatabaseHelper.selectItinerary(db, outboundFlightID);
 
-            DatabaseHelper.insertItinerary(db, outboundFlightID, clientID);
-            DatabaseHelper.insertItinerary(db, returnFlightID, clientID);
+            if(cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
 
+				flightExists = true;
+				Toast.makeText(getActivity().getApplicationContext(), "You already booked the outbound flight.", Toast.LENGTH_SHORT).show();
+            }else{
+				
+				flightExists = false;
+				DatabaseHelper.insertItinerary(db, outboundFlightID, clientID);
+				
+				Toast.makeText(getActivity().getApplicationContext(), "Your outbound flight booked successfully.", Toast.LENGTH_SHORT).show();
+			}
+
+            cursor = DatabaseHelper.selectItinerary(db, returnFlightID);
+
+            if(cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                flightExists = true;
+                Toast.makeText(getActivity().getApplicationContext(), "You already booked the return flight.", Toast.LENGTH_SHORT).show();
+            }else{
+
+                flightExists = false;
+                DatabaseHelper.insertItinerary(db, returnFlightID, clientID);
+
+                Toast.makeText(getActivity().getApplicationContext(), "Your return flight booked successfully.", Toast.LENGTH_SHORT).show();
+            }
 
         }catch(SQLiteException e){
 

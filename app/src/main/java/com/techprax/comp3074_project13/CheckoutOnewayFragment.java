@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -52,6 +53,7 @@ public class CheckoutOnewayFragment extends Fragment {
     private TextView totalFare;
     private Button bookFlight;
     private int clientID;
+    private boolean flightExists = false;
 
 
     public CheckoutOnewayFragment() {
@@ -90,12 +92,12 @@ public class CheckoutOnewayFragment extends Fragment {
             public void onClick(View view) {
 
                 bookFlight(clientID);
-                intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-
+                if(flightExists ==  false){
+                    intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
-
 
         // Inflate the layout for this fragment
         return view;
@@ -141,8 +143,22 @@ public class CheckoutOnewayFragment extends Fragment {
             databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
             db = databaseHelper.getWritableDatabase();
 
-            DatabaseHelper.insertItinerary(db, flightID, clientID);
+            cursor = DatabaseHelper.selectItinerary(db, flightID);
 
+            if(cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+					flightExists = true;
+					Toast.makeText(getActivity().getApplicationContext(), "You already booked this flight.", Toast.LENGTH_SHORT).show();
+            }else{
+				
+				flightExists = false;
+				DatabaseHelper.insertItinerary(db, flightID, clientID);
+
+				Toast.makeText(getActivity().getApplicationContext(), "Your flight booked successfully.", Toast.LENGTH_SHORT).show();
+			}
+
+           
 
         }catch(SQLiteException e){
 
@@ -151,19 +167,34 @@ public class CheckoutOnewayFragment extends Fragment {
 
     public Dialog bookFlightDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Your flight booked successfully. ")
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-
 
                     }
                 });
 
         return builder.create();
     }
+
+    public Dialog flightAlreadyBookedAlert() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("You already booked this flight. ")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        return builder.create();
+    }
+
+
+
 
     public int clientID() {
         LoginActivity.sharedPreferences = getActivity().getSharedPreferences(LoginActivity.MY_PREFERENCES, Context.MODE_PRIVATE);

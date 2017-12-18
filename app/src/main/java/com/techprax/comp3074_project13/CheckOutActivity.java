@@ -1,6 +1,9 @@
 package com.techprax.comp3074_project13;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +24,7 @@ public class CheckOutActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         currentTab = sharedPreferences.getInt("CURRENT_TAB", 0);
 
-        Toast.makeText(getApplicationContext(), String.valueOf(currentTab), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), String.valueOf(currentTab), Toast.LENGTH_SHORT).show();
 
 
         if (currentTab == 0) {
@@ -52,4 +55,6 @@ public class CheckOutActivity extends AppCompatActivity {
 
 
     }
+
+
 }

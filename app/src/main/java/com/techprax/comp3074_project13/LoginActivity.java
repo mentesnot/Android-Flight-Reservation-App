@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                     String email = cursor.getString(1);
                     clientID = cursor.getInt(3);
 
-                    Toast.makeText(getApplicationContext(), "client id " + String.valueOf(clientID), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "client id " + String.valueOf(clientID), Toast.LENGTH_SHORT).show();
 
                     sharedPreferences = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();

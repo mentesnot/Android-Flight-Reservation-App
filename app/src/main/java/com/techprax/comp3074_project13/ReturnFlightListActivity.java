@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -40,6 +41,8 @@ public class ReturnFlightListActivity extends AppCompatActivity {
     private int returnFlightID;
     private Intent intent;
     private android.support.v7.app.ActionBar actionBar;
+    private int sortByID;
+    private Button btnSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +58,20 @@ public class ReturnFlightListActivity extends AppCompatActivity {
         departureDate = sharedPreferences.getString("DEPARTURE_DATE", "");
         returnDate = sharedPreferences.getString("RETURN_DATE", "");
         flightClass = sharedPreferences.getString("FLIGHT_CLASS", "");
+        sortByID = sharedPreferences.getInt("RETURN_SORT_ID", 100);
 
         returnFlightList = (ListView) findViewById(R.id.returnFlightList);
+
+        btnSort = (Button) findViewById(R.id.btnReturnSort);
+
+
+        btnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortDialog().show();
+            }
+        });
+
 
         searchReturnFlight();
     }
@@ -66,9 +81,17 @@ public class ReturnFlightListActivity extends AppCompatActivity {
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getReadableDatabase();
 
-            //departure flight
-            cursor = DatabaseHelper.searchFlight(db, destination, origin,
-                    returnDate, flightClass);
+            //return flight
+            if (sortByID == 0) {
+                cursor = DatabaseHelper.selectFlight(db, destination, origin,
+                        returnDate, flightClass, "FARE");
+            } else if (sortByID == 1) {
+                cursor = DatabaseHelper.selectFlight(db, destination, origin,
+                        returnDate, flightClass, "FLIGHTDURATION");
+            } else {
+                cursor = DatabaseHelper.selectFlight(db, destination, origin,
+                        returnDate, flightClass);
+            }
 
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -85,11 +108,8 @@ public class ReturnFlightListActivity extends AppCompatActivity {
 
                 returnFlightList.setAdapter(listAdapter);
 
-                //Toast.makeText(getApplicationContext(), String.valueOf(cursor.getInt(0)), Toast.LENGTH_SHORT).show();
 
             } else {
-                //Toast.makeText(getApplicationContext(), "Flight not found", Toast.LENGTH_SHORT).show();
-
                 flightNotFoundDialog().show();
             }
 
@@ -98,7 +118,6 @@ public class ReturnFlightListActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
                     returnFlightID = (int) id;
-                    //Toast.makeText(getApplicationContext(), String.valueOf(oneWayFightID), Toast.LENGTH_SHORT).show();
 
                     intent = new Intent(getApplicationContext(), CheckOutActivity.class);
 
@@ -110,6 +129,7 @@ public class ReturnFlightListActivity extends AppCompatActivity {
                     editor.commit();
 
                     startActivity(intent);
+                    finish();
                 }
             });
 
@@ -129,6 +149,30 @@ public class ReturnFlightListActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+        return builder.create();
+    }
+
+    //sort by dialog (return)
+    public Dialog sortDialog() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sort by")
+                .setItems(R.array.sort, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+
+                        sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("RETURN_SORT_ID");
+                        editor.putInt("RETURN_SORT_ID", id);
+                        editor.commit();
+
+                        intent = new Intent(getApplicationContext(), ReturnFlightListActivity.class);
                         startActivity(intent);
                     }
                 });

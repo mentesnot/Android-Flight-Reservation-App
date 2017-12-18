@@ -15,7 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -41,7 +43,12 @@ public class OneWayFlightListActivity extends AppCompatActivity {
     private int returnFlightID;
     private Intent intent;
     private android.support.v7.app.ActionBar actionBar;
-
+    //custom dialog view
+    private View dialogLayout;
+    private TextView txtSortBy;
+    private ListView sortList;
+    private Button btnSort;
+    private int sortByID = 100;
 
 
     @Override
@@ -49,7 +56,6 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_way_flight_list);
 
-        //bundle = getIntent().getExtras();
         actionBar = getSupportActionBar();
 
         sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
@@ -59,19 +65,25 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         departureDate = sharedPreferences.getString("DEPARTURE_DATE", "");
         returnDate = sharedPreferences.getString("RETURN_DATE", "");
         flightClass = sharedPreferences.getString("FLIGHT_CLASS", "");
+        sortByID = sharedPreferences.getInt("ONEWAY_SORT_ID", 100);
 
-        //Toast.makeText(getApplicationContext(), origin, Toast.LENGTH_SHORT).show();
+        btnSort = (Button) findViewById(R.id.btnSort);
 
 
-       // txtMessage = (TextView) findViewById(R.id.txtMessage);
+        btnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortDialog().show();
+            }
+        });
+
         oneWayFlightList = (ListView) findViewById(R.id.onewayFlightList);
 
-
-        searchOneWayFlight();
+        searchOneWayFlight(sortByID);
 
     }
 
-    public void searchOneWayFlight() {
+    public void searchOneWayFlight(int sortByID) {
 
         try {
             databaseHelper = new DatabaseHelper(getApplicationContext());
@@ -79,13 +91,18 @@ public class OneWayFlightListActivity extends AppCompatActivity {
             actionBar.setTitle("Oneway flight list");
             actionBar.setSubtitle(origin + " -> " + destination);
 
-            cursor = DatabaseHelper.searchFlight(db, origin, destination,
-                    departureDate, flightClass);
+            if (sortByID == 0) {
+                cursor = DatabaseHelper.selectFlight(db, origin, destination,
+                        departureDate, flightClass, "FARE");
+            } else if (sortByID == 1) {
+                cursor = DatabaseHelper.selectFlight(db, origin, destination,
+                        departureDate, flightClass, "FLIGHTDURATION");
+            } else {
+                cursor = DatabaseHelper.selectFlight(db, origin, destination,
+                        departureDate, flightClass);
+            }
 
             if (cursor != null && cursor.getCount() > 0) {
-
-                //Toast.makeText(getApplicationContext(), "Im working", Toast.LENGTH_SHORT).show();
-
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),
                         R.layout.custom_list_view,
@@ -99,8 +116,6 @@ public class OneWayFlightListActivity extends AppCompatActivity {
                 oneWayFlightList.setAdapter(listAdapter);
 
             } else {
-                //txtMessage.setText("The specified flight is not available. Please try again later.");
-                //Toast.makeText(getApplicationContext(), "Flight unavailable", Toast.LENGTH_SHORT).show();
                 flightNotFoundDialog().show();
             }
 
@@ -109,8 +124,6 @@ public class OneWayFlightListActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
                     oneWayFightID = (int) id;
-                    Toast.makeText(getApplicationContext(), String.valueOf(oneWayFightID), Toast.LENGTH_SHORT).show();
-
                     intent = new Intent(getApplicationContext(), CheckOutActivity.class);
 
                     sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
@@ -120,9 +133,8 @@ public class OneWayFlightListActivity extends AppCompatActivity {
 
                     editor.commit();
 
-                    //intent.putExtra("SELECTED_FLIGHT_ID", oneWayFightID);
-
                     startActivity(intent);
+                    finish();
                 }
             });
 
@@ -141,10 +153,37 @@ public class OneWayFlightListActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
 
         return builder.create();
     }
+
+    //sort by dialog (one way)
+    public Dialog sortDialog() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sort by")
+                .setItems(R.array.sort, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+
+                        sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("ONEWAY_SORT_ID");
+                        editor.putInt("ONEWAY_SORT_ID", id);
+                        editor.commit();
+
+                        intent = new Intent(getApplicationContext(), OneWayFlightListActivity.class);
+                        startActivity(intent);
+
+
+                    }
+                });
+
+        return builder.create();
+    }
+
 
 }

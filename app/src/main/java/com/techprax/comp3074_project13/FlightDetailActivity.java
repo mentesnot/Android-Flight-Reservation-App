@@ -46,9 +46,6 @@ public class FlightDetailActivity extends AppCompatActivity {
         intent = getIntent();
         flightID = intent.getIntExtra("FLIGHT_ID",0);
 
-        Toast.makeText(getApplicationContext(), String.valueOf(flightID), Toast.LENGTH_SHORT).show();
-
-
         airline = (TextView) findViewById(R.id.txtAirlineDetail);
         flightNo = (TextView) findViewById(R.id.txtFlightNumberDetail);
         origin = (TextView) findViewById(R.id.txtOriginDetail);

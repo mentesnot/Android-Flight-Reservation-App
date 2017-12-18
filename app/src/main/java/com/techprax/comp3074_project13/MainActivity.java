@@ -46,11 +46,6 @@ public class MainActivity extends AppCompatActivity
 
     private int currentTab;
 
-    //date picker listeners
-    private DatePickerDialog.OnDateSetListener oneWayDepartureDatePickerListener,
-            roundDepartureDatePickerListener,
-            roundReturnDatePickerListener;
-
     //date picker dialog
     private DatePickerDialog datePickerDialog1;
     private DatePickerDialog datePickerDialog2;
@@ -481,7 +476,6 @@ public class MainActivity extends AppCompatActivity
     //number of travellers dialog (round trip)
     public Dialog roundNumTravellerDialog() {
 
-
         dialogLayout = getLayoutInflater().inflate(R.layout.custom_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -604,48 +598,38 @@ public class MainActivity extends AppCompatActivity
                     roundReturnDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
                     btnRoundReturnDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
                 }
-
-
             }
         };
     }
 
     public Dialog datePickerAlert() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("Please select a valid return date. The return date cannot be before the departure date.")
+        return new AlertDialog.Builder(this)
+                .setMessage("Please select a valid return date. The return date cannot be before the departure date.")
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                     }
-                });
-
-        return builder.create();
+                }).create();
     }
 
     public Dialog datePickerOneAlert() {
-
-        return new AlertDialog.Builder(this).setMessage("Please select a departure date.")
+        return new AlertDialog.Builder(this)
+                .setMessage("Please select a departure date.")
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                     }
                 }).create();
-
     }
 
     public Dialog datePickerTwoAlert() {
-        return new AlertDialog.Builder(this).setMessage("Please select a return date.")
+        return new AlertDialog.Builder(this)
+                .setMessage("Please select a return date.")
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                     }
                 }).create();
-
     }
 
 
@@ -661,8 +645,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("CURRENT_TAB", currentTab);
-        editor.putString("ORIGIN", txtOneWayFrom.getText().toString().trim());
-        editor.putString("DESTINATION", txtOneWayTo.getText().toString().trim());
+        editor.putString("ORIGIN", HelperUtilities.filter(txtOneWayFrom.getText().toString().trim()));
+        editor.putString("DESTINATION", HelperUtilities.filter(txtOneWayTo.getText().toString().trim()));
         editor.putString("DEPARTURE_DATE", oneWayDepartureDate);
         editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
 
@@ -682,8 +666,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("CURRENT_TAB", currentTab);
-        editor.putString("ORIGIN", txtRoundFrom.getText().toString().trim());
-        editor.putString("DESTINATION", txtRoundTo.getText().toString().trim());
+        editor.putString("ORIGIN", HelperUtilities.filter(txtRoundFrom.getText().toString().trim()));
+        editor.putString("DESTINATION", HelperUtilities.filter(txtRoundTo.getText().toString().trim()));
         editor.putString("DEPARTURE_DATE", roundDepartureDate);
         editor.putString("RETURN_DATE", roundReturnDate);
         editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
