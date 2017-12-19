@@ -3,6 +3,7 @@ package com.techprax.comp3074_project13;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,6 +57,7 @@ public class CheckoutOnewayFragment extends Fragment {
     private boolean flightExists = false;
     private int numTraveller;
     private TextView numTrav;
+    private double onewayFare;
 
 
     public CheckoutOnewayFragment() {
@@ -96,10 +98,6 @@ public class CheckoutOnewayFragment extends Fragment {
             public void onClick(View view) {
 
                 bookFlight(clientID);
-                if(flightExists ==  false){
-                    intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                }
             }
         });
 
@@ -112,11 +110,13 @@ public class CheckoutOnewayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         displaySelectedFlightInfo(flightID);
+        fare.setText("$" + onewayFare);
+        totalFare.setText(String.valueOf(HelperUtilities.calculateTotalFare(onewayFare,numTraveller)));
     }
 
     public void displaySelectedFlightInfo(int id) {
         try {
-            databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
+            databaseHelper = new DatabaseHelper(getActivity());
             db = databaseHelper.getReadableDatabase();
 
             cursor = DatabaseHelper.selectFlight(db, id);
@@ -133,8 +133,7 @@ public class CheckoutOnewayFragment extends Fragment {
                 departureTime.setText(cursor.getString(6));
                 arrivalTime.setText(cursor.getString(7));
                 flightDuration.setText(cursor.getString(8) + "h");
-                fare.setText("$" + cursor.getDouble(9));
-                totalFare.setText("$" + (numTraveller * cursor.getDouble(9)));
+                onewayFare = cursor.getDouble(9);
                 airline.setText(cursor.getString(10));
                 flightClass.setText(cursor.getString(12));
 
@@ -149,7 +148,7 @@ public class CheckoutOnewayFragment extends Fragment {
     public void bookFlight(int clientID){
         try{
 
-            databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
+            databaseHelper = new DatabaseHelper(getActivity());
             db = databaseHelper.getWritableDatabase();
 
             cursor = DatabaseHelper.selectItinerary(db, flightID);
@@ -158,13 +157,17 @@ public class CheckoutOnewayFragment extends Fragment {
                 cursor.moveToFirst();
 
 					flightExists = true;
-					Toast.makeText(getActivity().getApplicationContext(), "You already booked this flight.", Toast.LENGTH_SHORT).show();
+
+					flightAlreadyBookedAlert().show();
+
+					//Toast.makeText(getActivity().getApplicationContext(), "You already booked this flight.", Toast.LENGTH_SHORT).show();
             }else{
 				
 				flightExists = false;
 				DatabaseHelper.insertItinerary(db, flightID, clientID, numTraveller);
 
-				Toast.makeText(getActivity().getApplicationContext(), "Your flight booked successfully.", Toast.LENGTH_SHORT).show();
+                bookFlightDialog().show();
+				//Toast.makeText(getActivity().getApplicationContext(), "Your flight booked successfully.", Toast.LENGTH_SHORT).show();
 			}
 
            
@@ -181,7 +184,8 @@ public class CheckoutOnewayFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
                     }
                 });
 
@@ -195,14 +199,13 @@ public class CheckoutOnewayFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
                     }
                 });
 
         return builder.create();
     }
-
-
 
 
     public int clientID() {

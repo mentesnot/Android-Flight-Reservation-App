@@ -136,10 +136,6 @@ public class CheckoutRoundFragment extends Fragment {
 
                 bookFlight(clientID);
 
-                if(flightExists == false){
-                    intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                }
             }
         });
         // Inflate the layout for this fragment
@@ -163,7 +159,7 @@ public class CheckoutRoundFragment extends Fragment {
 
     public void displaySelectedOutboundFlightInfo(int id) {
         try {
-            databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
+            databaseHelper = new DatabaseHelper(getActivity());
             db = databaseHelper.getReadableDatabase();
 
             cursor = DatabaseHelper.selectFlight(db, id);
@@ -191,7 +187,7 @@ public class CheckoutRoundFragment extends Fragment {
 
     public void displaySelectedReturnFlightInfo(int id) {
         try {
-            databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
+            databaseHelper = new DatabaseHelper(getActivity());
             db = databaseHelper.getReadableDatabase();
 
             cursor = DatabaseHelper.selectFlight(db, id);
@@ -219,37 +215,34 @@ public class CheckoutRoundFragment extends Fragment {
     public void bookFlight(int clientID){
         try{
 
-            databaseHelper = new DatabaseHelper(getActivity().getApplicationContext());
+            databaseHelper = new DatabaseHelper(getActivity());
             db = databaseHelper.getWritableDatabase();
 			
 			cursor = DatabaseHelper.selectItinerary(db, outboundFlightID);
 
             if(cursor != null && cursor.getCount() > 0) {
-                cursor.moveToFirst();
 
 				flightExists = true;
-				Toast.makeText(getActivity().getApplicationContext(), "You already booked the outbound flight.", Toast.LENGTH_SHORT).show();
-            }else{
-				
-				flightExists = false;
-				DatabaseHelper.insertItinerary(db, outboundFlightID, clientID, numTraveller);
-				
-				Toast.makeText(getActivity().getApplicationContext(), "Your outbound flight booked successfully.", Toast.LENGTH_SHORT).show();
-			}
+
+            }
 
             cursor = DatabaseHelper.selectItinerary(db, returnFlightID);
 
             if(cursor != null && cursor.getCount() > 0) {
-                cursor.moveToFirst();
-
                 flightExists = true;
-                Toast.makeText(getActivity().getApplicationContext(), "You already booked the return flight.", Toast.LENGTH_SHORT).show();
-            }else{
 
-                flightExists = false;
+            }
+            if(flightExists){
+                roundFlightAlreadyBookedAlert().show();
+            }
+
+            if(flightExists == false){
+
+                DatabaseHelper.insertItinerary(db, outboundFlightID, clientID, numTraveller);
                 DatabaseHelper.insertItinerary(db, returnFlightID, clientID, numTraveller);
 
-                Toast.makeText(getActivity().getApplicationContext(), "Your return flight booked successfully.", Toast.LENGTH_SHORT).show();
+                bookFlightDialog().show();
+
             }
 
         }catch(SQLiteException e){
@@ -259,13 +252,31 @@ public class CheckoutRoundFragment extends Fragment {
 
     public Dialog bookFlightDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Your flight booked successfully. ")
                 .setCancelable(false)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
+                        intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
 
+                    }
+                });
+
+        return builder.create();
+    }
+
+    public Dialog roundFlightAlreadyBookedAlert() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("You already booked either the outbound or the return flight. Please select another flight and try again. ")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
 
                     }
                 });

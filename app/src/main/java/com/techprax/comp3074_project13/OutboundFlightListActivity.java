@@ -121,7 +121,7 @@ public class OutboundFlightListActivity extends AppCompatActivity {
             }
 
             cursor = DatabaseHelper.selectFlight(db, destination, origin,
-                    departureDate, flightClass);
+                    returnDate, flightClass);
 
             if (cursor != null && cursor.getCount() > 0){
                 //do nothing here
@@ -130,7 +130,9 @@ public class OutboundFlightListActivity extends AppCompatActivity {
                 flightUnavailable = true;
             }
 
-            if(flightUnavailable){
+            //Toast.makeText(getApplicationContext(), String.valueOf(flightUnavailable), Toast.LENGTH_SHORT).show();
+
+            if(flightUnavailable == true){
                 flightNotFound.setVisibility(View.VISIBLE);
                 btnSort.setVisibility(View.INVISIBLE);
             }
