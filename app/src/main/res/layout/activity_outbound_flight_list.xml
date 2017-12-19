@@ -22,9 +22,18 @@
             <ListView
                 android:id="@+id/outboundFlightList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:divider="@color/colorLightGray"
                 android:dividerHeight="10dp"/>
+
+            <TextView
+                android:id="@+id/txtOutboundFlightNotFound"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/bgrounded"
+                android:padding="15dp"
+                android:textSize="18sp"
+                android:text="The specified round flight is not available at this time. Please try again with a different combination. " />
 
         </LinearLayout>
 

@@ -238,4 +238,12 @@ public class HelperUtilities {
 
     }
 
+    public static Double calculateTotalFare(double outboundFare, double returnFare, int numTraveller){
+        return (outboundFare + returnFare) * numTraveller;
+    }
+
+    public static Double calculateTotalFare(double fare, int numTraveller){
+        return fare * numTraveller;
+    }
+
 }

@@ -43,6 +43,8 @@ public class OutboundFlightListActivity extends AppCompatActivity {
     private android.support.v7.app.ActionBar actionBar;
     private int sortByID;
     private Button btnSort;
+    private TextView flightNotFound;
+    private boolean flightUnavailable = false;
 
 
     @Override
@@ -65,6 +67,11 @@ public class OutboundFlightListActivity extends AppCompatActivity {
         flightList = (ListView) findViewById(R.id.outboundFlightList);
 
         btnSort = (Button) findViewById(R.id.btnOutboundSort);
+
+        flightNotFound = (TextView)findViewById(R.id.txtOutboundFlightNotFound);
+
+        flightNotFound.setVisibility(View.INVISIBLE);
+
 
 
         btnSort.setOnClickListener(new View.OnClickListener() {
@@ -109,8 +116,23 @@ public class OutboundFlightListActivity extends AppCompatActivity {
 
                 flightList.setAdapter(listAdapter);
 
-            } else {
-                flightNotFoundDialog().show();
+            }else{
+                flightUnavailable = true;
+            }
+
+            cursor = DatabaseHelper.selectFlight(db, destination, origin,
+                    departureDate, flightClass);
+
+            if (cursor != null && cursor.getCount() > 0){
+                //do nothing here
+
+            }else{
+                flightUnavailable = true;
+            }
+
+            if(flightUnavailable){
+                flightNotFound.setVisibility(View.VISIBLE);
+                btnSort.setVisibility(View.INVISIBLE);
             }
 
             flightList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

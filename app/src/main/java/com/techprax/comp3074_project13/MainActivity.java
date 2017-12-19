@@ -265,6 +265,7 @@ public class MainActivity extends AppCompatActivity
 
                     if (isValidOneWayInput() && isValidOneWayDate) {
                         searchOneWayFlight();
+
                     }
 
                 } else if (currentTab == 1) {
@@ -273,6 +274,7 @@ public class MainActivity extends AppCompatActivity
                         searchRoundFlight();
                     }
                 }
+
             }
         });
 
@@ -468,6 +470,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+
         numTraveller.setText(String.valueOf(oneWayTravellerCount));
 
         return builder.create();
@@ -644,11 +648,13 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+
         editor.putInt("CURRENT_TAB", currentTab);
         editor.putString("ORIGIN", HelperUtilities.filter(txtOneWayFrom.getText().toString().trim()));
         editor.putString("DESTINATION", HelperUtilities.filter(txtOneWayTo.getText().toString().trim()));
         editor.putString("DEPARTURE_DATE", oneWayDepartureDate);
         editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
+        editor.putInt("ONEWAY_NUM_TRAVELLER", oneWayTravellerCount);
 
         editor.commit();
 
@@ -671,6 +677,7 @@ public class MainActivity extends AppCompatActivity
         editor.putString("DEPARTURE_DATE", roundDepartureDate);
         editor.putString("RETURN_DATE", roundReturnDate);
         editor.putString("FLIGHT_CLASS", btnOneWayClass.getText().toString());
+        editor.putInt("ROUND_NUM_TRAVELLER", roundTravellerCount);
 
 
         editor.commit();

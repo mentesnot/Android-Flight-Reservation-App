@@ -37,6 +37,10 @@ public class FlightDetailActivity extends AppCompatActivity {
     private Button btnCancelFlight;
     private Intent intent;
     private int itineraryID;
+    private TextView traveller;
+    private int numTraveller;
+    private double singleFare;
+    private double totalCost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +56,22 @@ public class FlightDetailActivity extends AppCompatActivity {
         destination = (TextView) findViewById(R.id.txtDestinationDetail);
         departureDate = (TextView) findViewById(R.id.txtDepartureDateDetail);
         arrivalDate = (TextView) findViewById(R.id.txtArrivalDateDetail);
-        departureTime = (TextView) findViewById(R.id.txtArrivalTimeDetail);
+        departureTime = (TextView) findViewById(R.id.txtDepartureTimeDetail);
         arrivalTime = (TextView) findViewById(R.id.txtArrivalTimeDetail);
         flightDuration = (TextView) findViewById(R.id.txtFlightDurationDetail);
         flightClass = (TextView) findViewById(R.id.txtFlightClassDetail);
+        traveller = (TextView)findViewById(R.id.txtTravellerDetail);
         fare = (TextView) findViewById(R.id.txtFareDetail);
         totalFare = (TextView) findViewById(R.id.txtTotalFareDetail);
 
-
         displaySelectedFlightInfo(flightID);
+
+        totalCost = HelperUtilities.calculateTotalFare(singleFare, numTraveller);
+        traveller.setText(String.valueOf(numTraveller));
+        fare.setText("$" + singleFare);
+        totalFare.setText("$" + totalCost);
+
+
 
         btnCancelFlight = (Button) findViewById(R.id.btnCancelFlight) ;
 
@@ -79,22 +90,22 @@ public class FlightDetailActivity extends AppCompatActivity {
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getReadableDatabase();
 
-            cursor = DatabaseHelper.selectFlight(db, id);
+            cursor = DatabaseHelper.getItineraryDetail(db, id);
 
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                flightNo.setText(cursor.getString(1));
+                flightNo.setText(String.valueOf(cursor.getInt(1)));
                 origin.setText(cursor.getString(2));
                 destination.setText(cursor.getString(3));
                 departureDate.setText(cursor.getString(4));
                 arrivalDate.setText(cursor.getString(5));
                 departureTime.setText(cursor.getString(6));
                 arrivalTime.setText(cursor.getString(7));
-                flightDuration.setText(cursor.getString(8));
-                fare.setText("$" + cursor.getString(9));
-                totalFare.setText("$" + cursor.getString(9));
+                flightDuration.setText(cursor.getString(8) + "h");
+                singleFare = cursor.getDouble(9);
                 airline.setText(cursor.getString(10));
                 flightClass.setText(cursor.getString(12));
+                numTraveller = cursor.getInt(13);
             }
 
         } catch (SQLiteException ex) {

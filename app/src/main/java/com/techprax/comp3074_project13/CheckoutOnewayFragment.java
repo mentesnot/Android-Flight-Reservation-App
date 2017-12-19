@@ -54,6 +54,8 @@ public class CheckoutOnewayFragment extends Fragment {
     private Button bookFlight;
     private int clientID;
     private boolean flightExists = false;
+    private int numTraveller;
+    private TextView numTrav;
 
 
     public CheckoutOnewayFragment() {
@@ -69,6 +71,7 @@ public class CheckoutOnewayFragment extends Fragment {
 
         sharedPreferences = getActivity().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         flightID = sharedPreferences.getInt("ONEWAY_FLIGHT_ID", 0);
+        numTraveller = sharedPreferences.getInt("ONEWAY_NUM_TRAVELLER", 0);
 
         clientID = clientID();
 
@@ -82,6 +85,7 @@ public class CheckoutOnewayFragment extends Fragment {
         arrivalTime = (TextView) view.findViewById(R.id.txtCheckoutArrivalTime);
         flightDuration = (TextView) view.findViewById(R.id.txtCheckoutFlightDuration);
         flightClass = (TextView) view.findViewById(R.id.txtCheckoutFlightClass);
+        numTrav = (TextView) view.findViewById(R.id.txtCheckoutTraveller);
         fare = (TextView) view.findViewById(R.id.txtCheckoutFare);
         totalFare = (TextView) view.findViewById(R.id.txtCheckoutTotalFare);
 
@@ -119,21 +123,26 @@ public class CheckoutOnewayFragment extends Fragment {
 
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                flightNo.setText(cursor.getString(1));
+
+                //Toast.makeText(getActivity().getApplicationContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_SHORT).show();
+                flightNo.setText(String.valueOf(cursor.getInt(1)));
                 origin.setText(cursor.getString(2));
                 destination.setText(cursor.getString(3));
                 departureDate.setText(cursor.getString(4));
                 arrivalDate.setText(cursor.getString(5));
                 departureTime.setText(cursor.getString(6));
                 arrivalTime.setText(cursor.getString(7));
-                flightDuration.setText(cursor.getString(8));
-                fare.setText("$" + cursor.getString(9));
+                flightDuration.setText(cursor.getString(8) + "h");
+                fare.setText("$" + cursor.getDouble(9));
+                totalFare.setText("$" + (numTraveller * cursor.getDouble(9)));
                 airline.setText(cursor.getString(10));
                 flightClass.setText(cursor.getString(12));
+
+                numTrav.setText(String.valueOf(numTraveller));
             }
 
         } catch (SQLiteException ex) {
-
+            Toast.makeText(getActivity().getApplicationContext(), "Database error occurred", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,7 +162,7 @@ public class CheckoutOnewayFragment extends Fragment {
             }else{
 				
 				flightExists = false;
-				DatabaseHelper.insertItinerary(db, flightID, clientID);
+				DatabaseHelper.insertItinerary(db, flightID, clientID, numTraveller);
 
 				Toast.makeText(getActivity().getApplicationContext(), "Your flight booked successfully.", Toast.LENGTH_SHORT).show();
 			}

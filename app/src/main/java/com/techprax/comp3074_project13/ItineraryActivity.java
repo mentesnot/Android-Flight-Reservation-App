@@ -48,7 +48,6 @@ public class ItineraryActivity extends AppCompatActivity {
 
             if (cursor != null && cursor.getCount() > 0) {
 
-
                 //Toast.makeText(getApplicationContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_SHORT).show();
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),

@@ -49,7 +49,7 @@ public class OneWayFlightListActivity extends AppCompatActivity {
     private ListView sortList;
     private Button btnSort;
     private int sortByID = 100;
-
+    private TextView flightNotFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,11 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         sortByID = sharedPreferences.getInt("ONEWAY_SORT_ID", 100);
 
         btnSort = (Button) findViewById(R.id.btnSort);
+
+        flightNotFound = (TextView)findViewById(R.id.txtOneWayFlightNotFound);
+
+        flightNotFound.setVisibility(View.INVISIBLE);
+
 
 
         btnSort.setOnClickListener(new View.OnClickListener() {
@@ -88,8 +93,6 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         try {
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getReadableDatabase();
-            actionBar.setTitle("Oneway flight list");
-            actionBar.setSubtitle(origin + " -> " + destination);
 
             if (sortByID == 0) {
                 cursor = DatabaseHelper.selectFlight(db, origin, destination,
@@ -102,7 +105,12 @@ public class OneWayFlightListActivity extends AppCompatActivity {
                         departureDate, flightClass);
             }
 
+
+
             if (cursor != null && cursor.getCount() > 0) {
+
+                actionBar.setTitle("One way flight list");
+                actionBar.setSubtitle(origin + " -> " + destination);
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),
                         R.layout.custom_list_view,
@@ -116,7 +124,9 @@ public class OneWayFlightListActivity extends AppCompatActivity {
                 oneWayFlightList.setAdapter(listAdapter);
 
             } else {
-                flightNotFoundDialog().show();
+
+                flightNotFound.setVisibility(View.VISIBLE);
+                btnSort.setVisibility(View.INVISIBLE);
             }
 
             oneWayFlightList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

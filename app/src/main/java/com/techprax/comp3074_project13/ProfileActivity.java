@@ -56,9 +56,6 @@ public class ProfileActivity extends AppCompatActivity {
         getProfileInformation(clientID);
         loadImage(clientID);
 
-        Toast.makeText(getApplicationContext(), String.valueOf(clientID), Toast.LENGTH_SHORT).show();
-
-
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

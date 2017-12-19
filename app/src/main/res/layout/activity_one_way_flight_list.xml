@@ -21,12 +21,24 @@
             android:layout_margin="15dp"
             android:layout_above="@+id/btnSort">
 
+
             <ListView
                 android:id="@+id/onewayFlightList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:divider="@color/colorLightGray"
                 android:dividerHeight="10dp"/>
+
+            <TextView
+                android:id="@+id/txtOneWayFlightNotFound"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/bgrounded"
+                android:padding="15dp"
+                android:textSize="18sp"
+                android:text="The specified flight is not available at this time. Please try again later. " />
+
+
 
         </LinearLayout>
 

@@ -503,7 +503,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/travellerOutbound"
-                            android:text="Fare: "
+                            android:text="Outbound are: "
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -518,12 +518,33 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/totalfareOutbound"
+                            android:id="@+id/fareReturn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/fareOutbound"
+                            android:text="Return fare: "
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtCheckoutFareReturn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/fareReturn"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:text="$350"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/totalfareOutbound"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/fareReturn"
                             android:text="Total fare: "
                             android:textSize="16sp"
                             android:textStyle="bold" />

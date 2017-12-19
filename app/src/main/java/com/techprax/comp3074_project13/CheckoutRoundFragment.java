@@ -63,13 +63,19 @@ public class CheckoutRoundFragment extends Fragment {
     private TextView flightDurationReturn;
     private TextView flightClassReturn;
     private TextView airlineReturn;
-    private TextView fareReturn;
-    private TextView totalFareReturn;
+
 
     private Button bookFlight;
     private int clientID;
     private boolean flightExists = false;
     private View view;
+    private int numTraveller;
+
+    private double outboundFare;
+    private double returnFare;
+    private double totalCost;
+    private TextView fareRet;
+    private TextView traveller;
 
 
     public CheckoutRoundFragment() {
@@ -86,6 +92,7 @@ public class CheckoutRoundFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         outboundFlightID = sharedPreferences.getInt("OUTBOUND_FLIGHT_ID", 0);
         returnFlightID = sharedPreferences.getInt("RETURN_FLIGHT_ID", 0);
+        numTraveller = sharedPreferences.getInt("ROUND_NUM_TRAVELLER", 0);
 
         clientID = clientID();
 
@@ -99,8 +106,7 @@ public class CheckoutRoundFragment extends Fragment {
         arrivalTime = (TextView) view.findViewById(R.id.txtCheckoutArrivalTimeOutbound);
         flightDuration = (TextView) view.findViewById(R.id.txtCheckoutFlightDurationOutbound);
         flightClass = (TextView) view.findViewById(R.id.txtCheckoutFlightClassOutbound);
-        fare = (TextView) view.findViewById(R.id.txtCheckoutFareOutbound);
-        totalFare = (TextView) view.findViewById(R.id.txtCheckoutTotalFareOutbound);
+
 
         airlineReturn = (TextView) view.findViewById(R.id.txtCheckoutAirlineReturn);
         flightNoReturn = (TextView) view.findViewById(R.id.txtCheckoutFlightNumberReturn);
@@ -112,6 +118,15 @@ public class CheckoutRoundFragment extends Fragment {
         arrivalTimeReturn = (TextView) view.findViewById(R.id.txtCheckoutArrivalTimeReturn);
         flightDurationReturn = (TextView) view.findViewById(R.id.txtCheckoutFlightDurationReturn);
         flightClassReturn = (TextView) view.findViewById(R.id.txtCheckoutFlightClassReturn);
+
+
+
+        traveller = (TextView)view.findViewById(R.id.txtCheckoutTravellerOutbound);
+        fareRet = (TextView) view.findViewById(R.id.txtCheckoutFareReturn);
+        fare = (TextView) view.findViewById(R.id.txtCheckoutFareOutbound);
+        totalFare = (TextView) view.findViewById(R.id.txtCheckoutTotalFareOutbound);
+
+
 
 
         bookFlight = (Button)view.findViewById(R.id.btnRoundCheckout) ;
@@ -131,13 +146,19 @@ public class CheckoutRoundFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
         displaySelectedOutboundFlightInfo(outboundFlightID);
         displaySelectedReturnFlightInfo(returnFlightID);
+
+        fare.setText("$" + outboundFare);
+        fareRet.setText("$" + returnFare);
+        traveller.setText(String.valueOf(numTraveller));
+
+        totalCost = HelperUtilities.calculateTotalFare(outboundFare, returnFare, numTraveller);
+        totalFare.setText("$" + totalCost);
     }
 
     public void displaySelectedOutboundFlightInfo(int id) {
@@ -150,21 +171,21 @@ public class CheckoutRoundFragment extends Fragment {
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
 
-                flightNo.setText(cursor.getString(1));
+                flightNo.setText(String.valueOf(cursor.getInt(1)));
                 origin.setText(cursor.getString(2));
                 destination.setText(cursor.getString(3));
                 departureDate.setText(cursor.getString(4));
                 arrivalDate.setText(cursor.getString(5));
                 departureTime.setText(cursor.getString(6));
                 arrivalTime.setText(cursor.getString(7));
-                flightDuration.setText(cursor.getString(8));
-                fare.setText("$" + cursor.getString(9));
+                flightDuration.setText(cursor.getString(8)+ "h");
+                outboundFare = cursor.getDouble(9);
                 airline.setText(cursor.getString(10));
                 flightClass.setText(cursor.getString(12));
             }
 
         } catch (SQLiteException ex) {
-
+            Toast.makeText(getActivity().getApplicationContext(), "Database error occurred 1", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -185,12 +206,13 @@ public class CheckoutRoundFragment extends Fragment {
                 departureTimeReturn.setText(cursor.getString(6));
                 arrivalTimeReturn.setText(cursor.getString(7));
                 flightDurationReturn.setText(cursor.getString(8));
+                returnFare = cursor.getDouble(9);
                 airlineReturn.setText(cursor.getString(10));
                 flightClassReturn.setText(cursor.getString(12));
             }
 
         } catch (SQLiteException ex) {
-
+            Toast.makeText(getActivity().getApplicationContext(), "Database error occurred 2", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -210,7 +232,7 @@ public class CheckoutRoundFragment extends Fragment {
             }else{
 				
 				flightExists = false;
-				DatabaseHelper.insertItinerary(db, outboundFlightID, clientID);
+				DatabaseHelper.insertItinerary(db, outboundFlightID, clientID, numTraveller);
 				
 				Toast.makeText(getActivity().getApplicationContext(), "Your outbound flight booked successfully.", Toast.LENGTH_SHORT).show();
 			}
@@ -225,7 +247,7 @@ public class CheckoutRoundFragment extends Fragment {
             }else{
 
                 flightExists = false;
-                DatabaseHelper.insertItinerary(db, returnFlightID, clientID);
+                DatabaseHelper.insertItinerary(db, returnFlightID, clientID, numTraveller);
 
                 Toast.makeText(getActivity().getApplicationContext(), "Your return flight booked successfully.", Toast.LENGTH_SHORT).show();
             }
