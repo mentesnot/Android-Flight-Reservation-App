@@ -431,4 +431,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FROM FLIGHT AS t;";
     }
 
+    public static Cursor selectAccount(SQLiteDatabase db, String email) {
+        return db.query("ACCOUNT", null, " EMAIL = ? ",
+                new String[]{email}, null, null, null, null);
+    }
 }

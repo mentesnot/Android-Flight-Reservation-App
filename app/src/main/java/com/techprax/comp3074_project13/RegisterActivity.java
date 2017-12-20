@@ -50,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
         inputConfirmPassword = (EditText) findViewById(R.id.txtConfirmPassword);
 
 
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,31 +77,46 @@ public class RegisterActivity extends AppCompatActivity {
             hospitalDatabaseHelper = new DatabaseHelper(getApplicationContext());
             db = hospitalDatabaseHelper.getWritableDatabase();
 
+            cursor = DatabaseHelper.selectAccount(db, HelperUtilities.filter(inputEmail.getText().toString()));
+
             isValid = isValidUserInput();
+
+
             if (isValid) {
-                DatabaseHelper.insertClient(db,
-                        inputFirstName.getText().toString(),
-                        inputLastName.getText().toString(),
-                        inputPhone.getText().toString(),
-                        inputCreditCard.getText().toString());
 
-                cursor = DatabaseHelper.selectClientID(db,
-                        inputFirstName.getText().toString(),
-                        inputLastName.getText().toString(),
-                        inputPhone.getText().toString(),
-                        inputCreditCard.getText().toString());
+                if (cursor != null && cursor.getCount() > 0) {
 
-                if(cursor != null && cursor.getCount() == 1) {
-                    cursor.moveToFirst();
+                    accountExistsAlert().show();
 
-                    DatabaseHelper.insertAccount(db,
-                            inputEmail.getText().toString(),
-                            inputPassword.getText().toString(),
-                            cursor.getInt(0));
+                } else {
 
-                    registrationSuccessDialog().show();
+                    DatabaseHelper.insertClient(db,
+                            inputFirstName.getText().toString(),
+                            inputLastName.getText().toString(),
+                            inputPhone.getText().toString(),
+                            inputCreditCard.getText().toString());
+
+                    cursor = DatabaseHelper.selectClientID(db,
+                            inputFirstName.getText().toString(),
+                            inputLastName.getText().toString(),
+                            inputPhone.getText().toString(),
+                            inputCreditCard.getText().toString());
+
+                    if (cursor != null && cursor.getCount() == 1) {
+                        cursor.moveToFirst();
+
+                        DatabaseHelper.insertAccount(db,
+                                inputEmail.getText().toString(),
+                                inputPassword.getText().toString(),
+                                cursor.getInt(0));
+
+                        registrationSuccessDialog().show();
+                    }
+
                 }
+
             }
+
 
         } catch (SQLiteException ex) {
             Toast.makeText(getApplicationContext(), "Database unavailable", Toast.LENGTH_SHORT).show();
@@ -122,6 +136,20 @@ public class RegisterActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
                         finish();
+                    }
+                });
+
+        return builder.create();
+    }
+
+    public Dialog accountExistsAlert() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("An account with this email already exists. Please try again. ")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
                     }
                 });
 
@@ -182,7 +210,7 @@ public class RegisterActivity extends AppCompatActivity {
             return false;
         }
 
-        if(!(inputConfirmPassword.getText().toString().equals(inputPassword.getText().toString()))){
+        if (!(inputConfirmPassword.getText().toString().equals(inputPassword.getText().toString()))) {
 
             inputConfirmPassword.setError("The password doesn't match.");
             return false;
