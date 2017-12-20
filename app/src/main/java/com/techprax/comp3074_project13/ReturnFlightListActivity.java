@@ -97,7 +97,7 @@ public class ReturnFlightListActivity extends AppCompatActivity {
                 cursor.moveToFirst();
 
                 actionBar.setTitle("Select return flight");
-                actionBar.setSubtitle(destination + " -> " + origin);
+                actionBar.setSubtitle(HelperUtilities.capitalize(destination) + " -> " + HelperUtilities.capitalize(origin));
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),
                         R.layout.custom_list_view,

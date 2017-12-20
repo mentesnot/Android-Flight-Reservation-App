@@ -121,7 +121,7 @@ public class CheckoutOnewayFragment extends Fragment {
 
             cursor = DatabaseHelper.selectFlight(db, id);
 
-            if (cursor != null && cursor.getCount() > 0) {
+            if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
 
                 //Toast.makeText(getActivity().getApplicationContext(), String.valueOf(cursor.getCount()), Toast.LENGTH_SHORT).show();
@@ -164,6 +164,8 @@ public class CheckoutOnewayFragment extends Fragment {
             }else{
 				
 				flightExists = false;
+
+
 				DatabaseHelper.insertItinerary(db, flightID, clientID, numTraveller);
 
                 bookFlightDialog().show();

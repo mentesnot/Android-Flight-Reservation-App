@@ -105,7 +105,7 @@ public class OutboundFlightListActivity extends AppCompatActivity {
             if (cursor != null && cursor.getCount() > 0) {
 
                 actionBar.setTitle("Select outbound flight");
-                actionBar.setSubtitle(origin + " -> " + destination);
+                actionBar.setSubtitle(HelperUtilities.capitalize(origin) + " -> " + HelperUtilities.capitalize(destination));
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),
                         R.layout.custom_list_view,

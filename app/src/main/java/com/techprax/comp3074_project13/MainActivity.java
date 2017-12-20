@@ -21,6 +21,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -76,15 +78,15 @@ public class MainActivity extends AppCompatActivity
     private View dialogLayout;
 
     //one way UI controls
-    private TextView txtOneWayFrom;
-    private TextView txtOneWayTo;
+    private AutoCompleteTextView txtOneWayFrom;
+    private AutoCompleteTextView txtOneWayTo;
     private Button btnOneWayDepartureDatePicker;
     private Button btnOneWayClass;
     private Button btnOneWayNumTraveller;
 
     //round trip UI controls
-    private TextView txtRoundFrom;
-    private TextView txtRoundTo;
+    private AutoCompleteTextView txtRoundFrom;
+    private AutoCompleteTextView txtRoundTo;
     private Button btnRoundDepartureDatePicker;
     private Button btnRoundReturnDatePicker;
     private Button btnRoundClass;
@@ -105,6 +107,9 @@ public class MainActivity extends AppCompatActivity
 
     private boolean isValidOneWayDate = true;
     private boolean isValidRoundDate = true;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,17 +165,26 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, DatabaseHelper.CITIES);
+
         //one way form
-        txtOneWayFrom = (TextView) findViewById(R.id.txtOneWayFrom);
-        txtOneWayTo = (TextView) findViewById(R.id.txtOneWayTo);
+        txtOneWayFrom = (AutoCompleteTextView) findViewById(R.id.txtOneWayFrom);
+        txtOneWayFrom.setAdapter(adapter);
+
+        txtOneWayTo = (AutoCompleteTextView) findViewById(R.id.txtOneWayTo);
+        txtOneWayTo.setAdapter(adapter);
+
         btnOneWayDepartureDatePicker = (Button) findViewById(R.id.btnOneWayDepartureDatePicker);
         btnOneWayClass = (Button) findViewById(R.id.btnOneWayClass);
         btnOneWayNumTraveller = (Button) findViewById(R.id.btnOneWayNumTraveller);
 
 
         //round trip form
-        txtRoundFrom = (TextView) findViewById(R.id.txtRoundFrom);
-        txtRoundTo = (TextView) findViewById(R.id.txtRoundTo);
+        txtRoundFrom = (AutoCompleteTextView) findViewById(R.id.txtRoundFrom);
+        txtRoundFrom.setAdapter(adapter);
+        txtRoundTo = (AutoCompleteTextView) findViewById(R.id.txtRoundTo);
+        txtRoundTo.setAdapter(adapter);
         btnRoundDepartureDatePicker = (Button) findViewById(R.id.btnRoundDepartureDatePicker);
         btnRoundReturnDatePicker = (Button) findViewById(R.id.btnRoundReturnDatePicker);
         btnRoundClass = (Button) findViewById(R.id.btnRoundClass);
@@ -279,6 +293,7 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
+
 
     @Override
     public void onBackPressed() {

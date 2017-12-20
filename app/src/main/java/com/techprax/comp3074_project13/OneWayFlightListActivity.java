@@ -67,6 +67,8 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         flightClass = sharedPreferences.getString("FLIGHT_CLASS", "");
         sortByID = sharedPreferences.getInt("ONEWAY_SORT_ID", 100);
 
+        //Toast.makeText(getApplicationContext(), flightClass, Toast.LENGTH_SHORT).show();
+
         btnSort = (Button) findViewById(R.id.btnSort);
 
         flightNotFound = (TextView)findViewById(R.id.txtOneWayFlightNotFound);
@@ -109,8 +111,8 @@ public class OneWayFlightListActivity extends AppCompatActivity {
 
             if (cursor != null && cursor.getCount() > 0) {
 
-                actionBar.setTitle("One way flight list");
-                actionBar.setSubtitle(origin + " -> " + destination);
+                actionBar.setTitle("Select one way flight");
+                actionBar.setSubtitle(HelperUtilities.capitalize(origin) + " -> " + HelperUtilities.capitalize(destination));
 
                 CursorAdapter listAdapter = new SimpleCursorAdapter(getApplicationContext(),
                         R.layout.custom_list_view,
@@ -151,23 +153,6 @@ public class OneWayFlightListActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             Toast.makeText(getApplicationContext(), "Database error", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public Dialog flightNotFoundDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("The specified flight is not available. Please try again later.")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-
-        return builder.create();
     }
 
     //sort by dialog (one way)

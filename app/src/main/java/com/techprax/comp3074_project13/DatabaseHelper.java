@@ -74,20 +74,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             insertAirline(db, "United");
             insertAirline(db, "WestJet");
 
+
+            //toronto to ottawa
             insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "10:10", "12:10", 200.00, 1);
             insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "10:10", "12:10", 150.00, 2);
             insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "11:10", "12:10", 350.00, 3);
             insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "09:10", "12:10", 250.00, 4);
             insertFlight(db, "Toronto", "Ottawa", "2017-12-20", "2017-12-20", "10:10", "12:10", 100.00, 5);
-            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-20", "10:10", "12:10", 120.00, 6);
-            insertFlight(db, "Edmonton", "Winnipeg", "2017-12-20", "2017-12-20", "10:10", "12:10", 300.00, 3);
-            insertFlight(db, "Montreal", "Edmonton", "2017-12-20", "2017-12-20", "10:10", "12:10", 350.00, 4);
-            insertFlight(db, "NewYork", "Edmonton", "2017-12-20", "2017-12-20", "09:10", "12:10", 185.00, 5);
-            insertFlight(db, "Quebec City", "NewYork", "2017-12-20", "2017-12-20", "11:10", "12:10", 250.00, 6);
-            insertFlight(db, "British Colombia", "Nova Scotia", "2017-12-20", "2017-12-20", "10:10", "12:10", 360.00, 7);
-            insertFlight(db, "Los Angeles", "Ottawa", "2017-12-20", "2017-12-20", "10:10", "12:10", 350.00, 8);
-            insertFlight(db, "Winnipeg", "Toronto", "2017-12-20", "2017-12-20", "09:10", "12:10", 350.00, 9);
-            insertFlight(db, "Nova Scotia", "NewYork", "2017-12-20", "2017-12-20", "10:10", "12:10", 350.00, 10);
+
+            //ottawa to toronto
+            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-21", "10:10", "12:10", 120.00, 6);
+            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-21", "09:00", "12:10", 150.00, 7);
+            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-21", "10:10", "12:10", 170.00, 8);
+            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-21", "09:00", "12:10", 140.00, 9);
+            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-21", "09:00", "12:10", 100.00, 10);
+            insertFlight(db, "Ottawa", "Toronto", "2017-12-21", "2017-12-21", "10:10", "12:10", 350.00, 11);
+
+            //Edmonton to winnipeg
+            insertFlight(db, "Edmonton", "Winnipeg", "2017-12-22", "2017-12-22", "02:00", "04:45", 300.00, 2);
+            insertFlight(db, "Edmonton", "Winnipeg", "2017-12-22", "2017-12-22", "01:00", "03:15", 205.00, 1);
+            insertFlight(db, "Edmonton", "Winnipeg", "2017-12-22", "2017-12-22", "09:00", "12:20", 350.00, 10);
+            insertFlight(db, "Edmonton", "Winnipeg", "2017-12-22", "2017-12-22", "08:00", "10:15", 400.00, 11);
+            insertFlight(db, "Edmonton", "Winnipeg", "2017-12-22", "2017-12-22", "11:00", "13:11", 250.00, 1);
+
+            //winnipeg to edmonton
+            insertFlight(db, "Winnipeg", "Edmonton", "2018-1-15", "2018-1-15", "11:00", "13:11", 300.00, 9);
+            insertFlight(db, "Winnipeg", "Edmonton", "2018-1-15", "2018-1-15", "09:00", "12:00", 250.00, 1);
+            insertFlight(db, "Winnipeg", "Edmonton", "2018-1-15", "2018-1-15", "08:00", "11:00", 400.00, 3);
+            insertFlight(db, "Winnipeg", "Edmonton", "2018-1-15", "2018-1-15", "01:00", "04:00", 150.00, 7);
+            insertFlight(db, "Winnipeg", "Edmonton", "2018-1-15", "2018-1-15", "12:00", "14:00", 350.00, 10);
+
+
+            insertFlight(db, "Montreal", "Edmonton", "2018-1-20", "2018-1-20", "10:10", "12:10", 350.00, 4);
+            insertFlight(db, "New York", "Edmonton", "2018-2-15", "2018-2-15", "09:10", "12:10", 185.00, 5);
+            insertFlight(db, "Quebec City", "NewYork", "2018-1-10", "2018-1-10", "11:10", "12:10", 250.00, 6);
+            insertFlight(db, "Charlottetown", "Victoria", "2017-12-25", "2017-12-25", "10:10", "12:10", 360.00, 7);
+            insertFlight(db, "Los Angeles", "Ottawa", "2017-12-26", "2017-12-26", "10:10", "12:10", 350.00, 8);
+            insertFlight(db, "Winnipeg", "Toronto", "2017-12-27", "2017-12-27", "09:10", "12:10", 350.00, 9);
+            insertFlight(db, "Victoria", "New York", "2017-12-28", "2017-12-28", "10:10", "12:10", 350.00, 10);
 
             insertSeat(db, "F", 1, 1);
             insertSeat(db, "F", 2, 1);
@@ -95,6 +119,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             insertSeat(db, "F", 4, 1);
             insertSeat(db, "F", 5, 1);
             insertSeat(db, "F", 6, 1);
+            insertSeat(db, "F", 7, 1);
+            insertSeat(db, "F", 8, 1);
+            insertSeat(db, "F", 9, 1);
+            insertSeat(db, "F", 10, 1);
+            insertSeat(db, "F", 11, 1);
+            insertSeat(db, "F", 12, 1);
+            insertSeat(db, "F", 13, 1);
+            insertSeat(db, "F", 14, 1);
+            insertSeat(db, "F", 15, 1);
+            insertSeat(db, "F", 16, 1);
+            insertSeat(db, "F", 17, 1);
+            insertSeat(db, "F", 18, 1);
+            insertSeat(db, "F", 19, 1);
+            insertSeat(db, "F", 20, 1);
+            insertSeat(db, "F", 21, 1);
+            insertSeat(db, "F", 22, 1);
+            insertSeat(db, "F", 23, 1);
+            insertSeat(db, "F", 24, 1);
+            insertSeat(db, "F", 25, 1);
+            insertSeat(db, "F", 26, 2);
+            insertSeat(db, "F", 27, 2);
+            insertSeat(db, "F", 28, 2);
 
             insertFlightClass(db, "Economy");
             insertFlightClass(db, "Business");
@@ -114,15 +160,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String createAirline() {
         return "CREATE TABLE AIRLINE ("
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "AIRLINENAME TEXT);";
+                + "AIRLINENAME TEXT COLLATE NOCASE);";
     }
 
     public String createFlight() {
         return "CREATE TABLE FLIGHT (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "FLIGHTNUMBER INTEGER, " +
-                "ORIGIN TEXT, " +
-                "DESTINATION TEXT, " +
+                "ORIGIN TEXT COLLATE NOCASE, " +
+                "DESTINATION TEXT COLLATE NOCASE, " +
                 "DEPARTUREDATE DATE, " +
                 "ARRIVALDATE DATE, " +
                 "DEPARTURETIME TIME, " +
@@ -153,8 +199,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String createClient() {
         return "CREATE TABLE CLIENT (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "FIRSTNAME TEXT, " +
-                "LASTNAME TEXT, " +
+                "FIRSTNAME TEXT COLLATE NOCASE, " +
+                "LASTNAME TEXT COLLATE NOCASE, " +
                 "PHONE TEXT, " +
                 "CREDITCARD TEXT, " +
                 "IMAGE BLOB);";
@@ -284,11 +330,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT FLIGHT._id, FLIGHTNUMBER, ORIGIN, DESTINATION, DEPARTUREDATE, ARRIVALDATE, DEPARTURETIME, " +
                 " ARRIVALTIME, FLIGHTDURATION, FARE, AIRLINENAME, SEATNUMBER, FLIGHTCLASSNAME " +
                 "FROM FLIGHT " +
-                "INNER JOIN AIRLINE " +
-                "ON FLIGHT.FLIGHT_AIRLINE = AIRLINE._id " +
-                "INNER JOIN " +
+                "JOIN AIRLINE " +
+                "ON AIRLINE._id = FLIGHT.FLIGHT_AIRLINE " +
+                "JOIN " +
                 "SEAT " +
-                "ON SEAT.SEAT_FLIGHT = FLIGHT._id " +
+                "ON FLIGHT._id = SEAT.SEAT_FLIGHT " +
                 "INNER JOIN " +
                 "FLIGHTCLASS " +
                 "ON SEAT.SEAT_FLIGHTCLASS = FLIGHTCLASS._id " +
@@ -421,18 +467,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(clientID)}, null, null, null, null);
     }
 
-    public String dateDifference() {
-        return "SELECT " +
-                "cast( " +
-                "         (" +
-                "                  strftime('%s',t.ARRIVALTIME)-strftime('%s',t.DEPARTURETIME)" +
-                "         ) AS real " +
-                "      )/60/60 AS elapsed " +
-                "FROM FLIGHT AS t;";
-    }
+
 
     public static Cursor selectAccount(SQLiteDatabase db, String email) {
         return db.query("ACCOUNT", null, " EMAIL = ? ",
                 new String[]{email}, null, null, null, null);
     }
+
+    public static final String[] CITIES = new String[] {
+            "Toronto", "Ottawa", "Edmonton", "Winnipeg", "Victoria",
+            "Fredericton", "St. John's", "Halifax", "Charlottetown",
+            "Quebec City", "Regina", "Yellowknife", "Iqaluit", "Whitehorse", "New York", "Boston", "Los Angeles",
+            "Montreal"
+    };
 }

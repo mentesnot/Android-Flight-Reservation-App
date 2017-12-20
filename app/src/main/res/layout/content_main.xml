@@ -65,7 +65,7 @@
                                     android:paddingTop="15dp"
                                     android:paddingRight="15dp"/>
 
-                                <EditText
+                                <AutoCompleteTextView
                                     android:id="@+id/txtOneWayFrom"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                                     android:paddingTop="15dp"
                                     android:paddingRight="15dp"/>
 
-                                <EditText
+                                <AutoCompleteTextView
                                     android:id="@+id/txtOneWayTo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
                                     android:paddingTop="15dp"
                                     android:paddingRight="15dp"/>
 
-                                <EditText
+                                <AutoCompleteTextView
                                     android:id="@+id/txtRoundFrom"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -212,7 +212,7 @@
                                     android:paddingTop="15dp"
                                     android:paddingRight="15dp"/>
 
-                                <EditText
+                                <AutoCompleteTextView
                                     android:id="@+id/txtRoundTo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

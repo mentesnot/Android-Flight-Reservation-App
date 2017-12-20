@@ -94,6 +94,7 @@ public class CheckoutRoundFragment extends Fragment {
         returnFlightID = sharedPreferences.getInt("RETURN_FLIGHT_ID", 0);
         numTraveller = sharedPreferences.getInt("ROUND_NUM_TRAVELLER", 0);
 
+
         clientID = clientID();
 
         airline = (TextView) view.findViewById(R.id.txtCheckoutAirlineOutbound);
@@ -167,6 +168,7 @@ public class CheckoutRoundFragment extends Fragment {
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
 
+
                 flightNo.setText(String.valueOf(cursor.getInt(1)));
                 origin.setText(cursor.getString(2));
                 destination.setText(cursor.getString(3));
@@ -194,6 +196,7 @@ public class CheckoutRoundFragment extends Fragment {
 
             if (cursor != null && cursor.getCount() == 1) {
                 cursor.moveToFirst();
+
                 flightNoReturn.setText(cursor.getString(1));
                 originReturn.setText(cursor.getString(2));
                 destinationReturn.setText(cursor.getString(3));
