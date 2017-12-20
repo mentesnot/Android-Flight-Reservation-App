@@ -128,7 +128,7 @@ public class HelperUtilities {
 
 
         int index = 0;
-        String mask = "****-****-****-####";
+        String mask = "************####";
         StringBuilder maskedNumber = new StringBuilder();
         for (int i = 0; i < mask.length(); i++) {
             char c = mask.charAt(i);

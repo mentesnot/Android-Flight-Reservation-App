@@ -2,6 +2,7 @@ package com.techprax.comp3074_project13;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -41,6 +42,10 @@ public class FlightDetailActivity extends AppCompatActivity {
     private int numTraveller;
     private double singleFare;
     private double totalCost;
+    private TextView fName;
+    private TextView cCard;
+    private TextView timeStamp;
+    private int clientID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,11 @@ public class FlightDetailActivity extends AppCompatActivity {
 
         intent = getIntent();
         flightID = intent.getIntExtra("FLIGHT_ID",0);
+        clientID =clientID();
+
+        fName = (TextView)findViewById(R.id.txtFName);
+        cCard = (TextView)findViewById(R.id.txtCCard);
+        timeStamp = (TextView)findViewById(R.id.txtTimeStamp);
 
         airline = (TextView) findViewById(R.id.txtAirlineDetail);
         flightNo = (TextView) findViewById(R.id.txtFlightNumberDetail);
@@ -106,6 +116,15 @@ public class FlightDetailActivity extends AppCompatActivity {
                 airline.setText(cursor.getString(10));
                 flightClass.setText(cursor.getString(12));
                 numTraveller = cursor.getInt(13);
+                timeStamp.setText(cursor.getString(14));
+            }
+
+            cursor = DatabaseHelper.selectClientJoinAccount(db, clientID);
+            if(cursor != null && cursor.getCount() == 1){
+                cursor.moveToFirst();
+
+                fName.setText(HelperUtilities.capitalize(cursor.getString(0)) + " " + HelperUtilities.capitalize(cursor.getString(1)));
+                cCard.setText(HelperUtilities.maskCardNumber(cursor.getString(3)));
             }
 
         } catch (SQLiteException ex) {
@@ -157,6 +176,12 @@ public class FlightDetailActivity extends AppCompatActivity {
             });
 
         return builder.create();
+    }
+
+    public int clientID() {
+        LoginActivity.sharedPreferences = getSharedPreferences(LoginActivity.MY_PREFERENCES, Context.MODE_PRIVATE);
+        clientID = LoginActivity.sharedPreferences.getInt(LoginActivity.CLIENT_ID, 0);
+        return clientID;
     }
 
 
