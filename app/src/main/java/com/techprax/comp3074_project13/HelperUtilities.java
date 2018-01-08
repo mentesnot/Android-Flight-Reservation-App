@@ -1,3 +1,12 @@
+/*************************************************************************************************
+ * JANUARY 8, 2018
+ * COMP3074 - PROJECT 13
+ * Members:
+ *           HAMAD AHMAD:       101006399
+ *           MENTESNOT ABOSET : 101022050
+ *           TOAN NGUYEN:       100979753
+ *           ZHENG LIU:         100970328
+ * ************************************************************************************************/
 package com.techprax.comp3074_project13;
 
 
@@ -244,6 +253,24 @@ public class HelperUtilities {
 
     public static Double calculateTotalFare(double fare, int numTraveller){
         return fare * numTraveller;
+    }
+
+    public static boolean compareDate(String departureDate, String returnDate){
+
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1 = sdf.parse(departureDate);
+            Date date2 = sdf.parse(returnDate);
+
+            if (date2.before(date1)) {
+                return true;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 }

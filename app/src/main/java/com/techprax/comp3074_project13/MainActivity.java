@@ -1,3 +1,12 @@
+/*************************************************************************************************
+ * JANUARY 8, 2018
+ * COMP3074 - PROJECT 13
+ * Members:
+ *           HAMAD AHMAD:       101006399
+ *           MENTESNOT ABOSET : 101022050
+ *           TOAN NGUYEN:       100979753
+ *           ZHENG LIU:         100970328
+ * ************************************************************************************************/
 package com.techprax.comp3074_project13;
 
 import android.app.AlertDialog;
@@ -107,8 +116,6 @@ public class MainActivity extends AppCompatActivity
 
     private boolean isValidOneWayDate = true;
     private boolean isValidRoundDate = true;
-
-
 
 
     @Override
@@ -486,7 +493,6 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
         numTraveller.setText(String.valueOf(oneWayTravellerCount));
 
         return builder.create();
@@ -595,6 +601,8 @@ public class MainActivity extends AppCompatActivity
                 tempMonth = startMonth;
                 tempDay = startDay;
 
+                //Toast.makeText(getApplicationContext(), "departure " + tempYear + " " + tempMonth + " " + tempDay, Toast.LENGTH_SHORT).show();
+
                 //get round trip departure date here
                 roundDepartureDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
                 btnRoundDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
@@ -607,10 +615,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
 
-                if (startYear < tempYear || startMonth < tempMonth || startDay < tempDay) {
+
+                //Toast.makeText(getApplicationContext(), "return " + startYear + " " + startMonth + " " + startDay, Toast.LENGTH_SHORT).show();
+
+                String departureDate = tempYear + "-" + (tempMonth + 1) + "-" + tempDay;
+                String returnDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
+
+                if (HelperUtilities.compareDate(departureDate, returnDate)) {
                     datePickerAlert().show();
                     isValidRoundDate = false;
-
                 } else {
                     isValidRoundDate = true;
                     //get round trip return date here

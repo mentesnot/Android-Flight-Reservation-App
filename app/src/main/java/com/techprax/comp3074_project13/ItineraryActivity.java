@@ -1,3 +1,12 @@
+/*************************************************************************************************
+ * JANUARY 8, 2018
+ * COMP3074 - PROJECT 13
+ * Members:
+ *           HAMAD AHMAD:       101006399
+ *           MENTESNOT ABOSET : 101022050
+ *           TOAN NGUYEN:       100979753
+ *           ZHENG LIU:         100970328
+ * ************************************************************************************************/
 package com.techprax.comp3074_project13;
 
 import android.content.Context;
@@ -25,6 +34,7 @@ public class ItineraryActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     private Cursor cursor;
     private int flightID;
+    private int clientID;
     private Intent intent;
     private ListView flightList;
     private TextView itineraryMessage;
@@ -37,14 +47,17 @@ public class ItineraryActivity extends AppCompatActivity {
         flightList = (ListView) findViewById(R.id.itinerary);
 
         itineraryMessage = (TextView)findViewById(R.id.itineraryMessage);
+        clientID = clientID();
 
         itineraryMessage.setVisibility(View.INVISIBLE);
+
+
 
         try{
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getReadableDatabase();
 
-            cursor = DatabaseHelper.selectItinerary(db);
+            cursor = DatabaseHelper.selectItinerary(db, clientID);
 
             if (cursor != null && cursor.getCount() > 0) {
 
@@ -85,6 +98,12 @@ public class ItineraryActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Database unavailable", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public int clientID() {
+        LoginActivity.sharedPreferences = getSharedPreferences(LoginActivity.MY_PREFERENCES, Context.MODE_PRIVATE);
+        clientID = LoginActivity.sharedPreferences.getInt(LoginActivity.CLIENT_ID, 0);
+        return clientID;
     }
 
 

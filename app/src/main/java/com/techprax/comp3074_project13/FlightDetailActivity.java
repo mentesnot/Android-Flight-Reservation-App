@@ -1,3 +1,12 @@
+/*************************************************************************************************
+ * JANUARY 8, 2018
+ * COMP3074 - PROJECT 13
+ * Members:
+ *           HAMAD AHMAD:       101006399
+ *           MENTESNOT ABOSET : 101022050
+ *           TOAN NGUYEN:       100979753
+ *           ZHENG LIU:         100970328
+ * ************************************************************************************************/
 package com.techprax.comp3074_project13;
 
 import android.app.AlertDialog;
@@ -138,7 +147,9 @@ public class FlightDetailActivity extends AppCompatActivity {
             databaseHelper = new DatabaseHelper(getApplicationContext());
             db = databaseHelper.getWritableDatabase();
 
-            cursor = DatabaseHelper.selectItinerary(db, flightID);
+            clientID =clientID();
+
+            cursor = DatabaseHelper.selectItinerary(db, flightID, clientID);
 
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
