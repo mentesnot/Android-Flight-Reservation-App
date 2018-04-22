@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/colorOrange"
     android:gravity="center"
-    tools:context="com.techprax.comp3074_project13.LaunchActivity">
+    tools:context="com.mentesnot.easytravel.controllers.LaunchActivity">
 
     <ImageView
         android:id="@+id/imageView3"

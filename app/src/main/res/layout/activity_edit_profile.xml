@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.techprax.comp3074_project13.EditProfileActivity">
+    tools:context="com.mentesnot.easytravel.controllers.EditProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

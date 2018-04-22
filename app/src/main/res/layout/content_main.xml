@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/colorLightGray"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.techprax.comp3074_project13.MainActivity"
+    tools:context="com.mentesnot.easytravel.controllers.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
 

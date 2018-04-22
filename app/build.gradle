@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.techprax.comp3074_project13"
+        applicationId "com.mentesnot.easytravel"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1

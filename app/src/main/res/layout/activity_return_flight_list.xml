@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorLightGray"
-    tools:context="com.techprax.comp3074_project13.ReturnFlightListActivity">
+    tools:context="com.mentesnot.easytravel.controllers.ReturnFlightListActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

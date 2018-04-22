@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorLightGray"
-    tools:context="com.techprax.comp3074_project13.OneWayFlightListActivity">
+    tools:context="com.mentesnot.easytravel.controllers.OneWayFlightListActivity">
 
 
     <RelativeLayout

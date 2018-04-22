@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:background="@color/colorLightGray"
-    tools:context="com.techprax.comp3074_project13.ItineraryActivity">
+    tools:context="com.mentesnot.easytravel.controllers.ItineraryActivity">
 
 
 

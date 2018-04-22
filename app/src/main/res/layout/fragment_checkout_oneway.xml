@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.techprax.comp3074_project13.CheckoutOnewayFragment">
+    tools:context="com.mentesnot.easytravel.controllers.CheckoutOnewayFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

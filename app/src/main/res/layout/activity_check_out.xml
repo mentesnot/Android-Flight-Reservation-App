@@ -7,7 +7,7 @@
     android:background="@color/colorLightGray"
     android:id="@+id/fragment_container"
     android:orientation="vertical"
-    tools:context="com.techprax.comp3074_project13.CheckOutActivity">
+    tools:context="com.mentesnot.easytravel.controllers.CheckOutActivity">
 
 
 

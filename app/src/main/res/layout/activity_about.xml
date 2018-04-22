@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/primaryBlue"
     android:padding="35dp"
-    tools:context="com.techprax.comp3074_project13.AboutActivity">
+    tools:context="com.mentesnot.easytravel.controllers.AboutActivity">
 
     <TextView
         android:id="@+id/txtAboutHeading"

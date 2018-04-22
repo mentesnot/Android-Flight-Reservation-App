@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.techprax.comp3074_project13.RegisterActivity">
+    tools:context="com.mentesnot.easytravel.controllers.RegisterActivity">
 
     <ImageView
         android:id="@+id/imageView2"
