@@ -1,3 +1,3 @@
 # Introduction
-Android airline reservation app
+Android flight reservation app
 
