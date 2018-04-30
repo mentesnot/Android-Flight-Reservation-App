@@ -163,8 +163,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTabChanged(String s) {
                 currentTab = tabHost.getCurrentTab();
-
-                //Toast.makeText(getApplicationContext(), String.valueOf(currentTab), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -597,8 +595,6 @@ public class MainActivity extends AppCompatActivity
                 tempMonth = startMonth;
                 tempDay = startDay;
 
-                //Toast.makeText(getApplicationContext(), "departure " + tempYear + " " + tempMonth + " " + tempDay, Toast.LENGTH_SHORT).show();
-
                 //get round trip departure date here
                 roundDepartureDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
                 btnRoundDepartureDatePicker.setText(HelperUtilities.formatDate(startYear, startMonth, startDay));
@@ -610,9 +606,6 @@ public class MainActivity extends AppCompatActivity
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int startYear, int startMonth, int startDay) {
-
-
-                //Toast.makeText(getApplicationContext(), "return " + startYear + " " + startMonth + " " + startDay, Toast.LENGTH_SHORT).show();
 
                 String departureDate = tempYear + "-" + (tempMonth + 1) + "-" + tempDay;
                 String returnDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
@@ -663,8 +656,6 @@ public class MainActivity extends AppCompatActivity
 
     public void searchOneWayFlight() {
 
-        //Toast.makeText(getApplicationContext(), "Im working", Toast.LENGTH_SHORT).show();
-
         intent = new Intent(getApplicationContext(), OneWayFlightListActivity.class);
 
         sharedPreferences = getSharedPreferences("PREFS", Context.MODE_PRIVATE);
@@ -684,7 +675,6 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(intent);
 
-        //Toast.makeText(getApplicationContext(), cursor.getString(7), Toast.LENGTH_SHORT).show();
 
     }
 
